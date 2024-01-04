@@ -35,9 +35,24 @@ const PlayScreen = (props: {
     <SafeAreaView style={playHomeScreenStyles.container}>
       <Text style={playHomeScreenStyles.largeText}>Play</Text>
       <View style={playHomeScreenStyles.playButtonView}>
-        <PillButton text={"Latest"} color={"black"} onPress={onPressLatest} />
-        <PillButton text={"Random"} color={"black"} onPress={onPressRandom} />
-        <PillButton text={"Mine"} color={"black"} onPress={onPressMine} />
+        <PillButton
+          text={"Latest"}
+          color={"black"}
+          width={100}
+          onPress={onPressLatest}
+        />
+        <PillButton
+          text={"Random"}
+          color={"black"}
+          width={100}
+          onPress={onPressRandom}
+        />
+        <PillButton
+          text={"Mine"}
+          color={"black"}
+          width={100}
+          onPress={onPressMine}
+        />
       </View>
     </SafeAreaView>
   );

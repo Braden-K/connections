@@ -25,6 +25,10 @@ export const playPuzzleScreenStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  buttonView: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
 });
 
 export const playHomeScreenStyles = StyleSheet.create({
@@ -40,11 +44,22 @@ export const playHomeScreenStyles = StyleSheet.create({
     borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
-    width: 100,
     height: 50,
     borderRadius: 25,
   },
   pillButtonText: {
+    fontFamily: "code",
+    fontSize: 20,
+  },
+  rectangularButton: {
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 100,
+    height: 50,
+    borderRadius: 5,
+  },
+  RectangularButtonText: {
     fontFamily: "code",
     fontSize: 20,
   },

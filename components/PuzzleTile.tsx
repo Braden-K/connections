@@ -3,7 +3,7 @@ import { playPuzzleScreenStyles } from "../styles/playTabStyles";
 import { useState } from "react";
 import { TILE_COLOR, PRESSED_TILE_COLOR } from "../styles/constants";
 
-const PuzzleTile = () => {
+const PuzzleTile = (props: { tile: string }) => {
   const [color, setColor] = useState<string>(TILE_COLOR);
 
   const onPress = () => {
@@ -15,7 +15,7 @@ const PuzzleTile = () => {
       style={{ ...playPuzzleScreenStyles.puzzleTile, backgroundColor: color }}
       onPress={onPress}
     >
-      <Text>Tile</Text>
+      <Text>{props.tile}</Text>
     </TouchableOpacity>
   );
 };
