@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../redux/userSlice";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation";
+import { getApiPuzzlesByUserId } from "../firestoreApi/puzzles";
+import { pushAllUserPuzzles } from "../redux/puzzleSlice";
 
 const LoginInput = (props: {
   navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
@@ -21,8 +23,12 @@ const LoginInput = (props: {
 
     if (loginSuccess) {
       const user = await getApiUserByEmail(email);
-      dispatch(loginUser({ user: user }));
-      props.navigation.navigate("Home");
+      if (user !== null) {
+        dispatch(loginUser({ user: user }));
+        const userPuzzles = await getApiPuzzlesByUserId(user.id);
+        dispatch(pushAllUserPuzzles(userPuzzles));
+        props.navigation.navigate("Home");
+      }
     } else {
       console.log("todo: display wrong username or pass");
     }

@@ -7,7 +7,12 @@ const CreateStackNavigator = () => {
   const Stack = createNativeStackNavigator<CreateStackParamList>();
 
   return (
-    <Stack.Navigator initialRouteName="MyPuzzles">
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="MyPuzzles"
+    >
       <Stack.Screen name="MyPuzzles" component={MyPuzzlesScreen} />
       <Stack.Screen name="CreatePuzzle" component={CreatePuzzleScreen} />
     </Stack.Navigator>

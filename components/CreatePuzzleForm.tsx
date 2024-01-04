@@ -1,6 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Category, PuzzleBoard } from "../types/PuzzleBoard";
+import {
+  Category,
+  PuzzleBoard,
+  PuzzleBoardPostQuery,
+} from "../types/PuzzleBoard";
 import {
   ScrollView,
   TextInput,
@@ -11,8 +15,19 @@ import {
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createPuzzleScreenStyles } from "../styles/createTabStyles";
+import { getApiPuzzlesByUserId, postApiPuzzle } from "../firestoreApi/puzzles";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { pushUserPuzzle } from "../redux/puzzleSlice";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { CreateStackParamList } from "../types/navigation";
 
-export const CreatePuzzleForm = () => {
+export const CreatePuzzleForm = (props: {
+  navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
+}) => {
+  const user = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch();
+
   const [des1, setDes1] = useState<string>("");
   const [t1a, setT1a] = useState<string>("");
   const [t1b, setT1b] = useState<string>("");
@@ -37,15 +52,17 @@ export const CreatePuzzleForm = () => {
   const [t4c, setT4c] = useState<string>("");
   const [t4d, setT4d] = useState<string>("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const c1: Category = { descriptor: des1, tiles: [t1a, t1b, t1c, t1d] };
     const c2: Category = { descriptor: des2, tiles: [t2a, t2b, t2c, t2d] };
     const c3: Category = { descriptor: des3, tiles: [t3a, t3b, t3c, t3d] };
     const c4: Category = { descriptor: des4, tiles: [t4a, t4b, t4c, t4d] };
 
-    const puzzleBoard: PuzzleBoard = [c1, c2, c3, c4];
+    const puzzleBoard: PuzzleBoardPostQuery = [c1, c2, c3, c4];
 
-    console.log("puzzleBoard is ", puzzleBoard);
+    const puzzleId = await postApiPuzzle(user.id, puzzleBoard);
+    dispatch(pushUserPuzzle({ puzzleId, puzzle: puzzleBoard }));
+    props.navigation.navigate("MyPuzzles");
   };
 
   return (

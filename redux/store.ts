@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import usersReducer from "./userSlice";
+import puzzleReducer from "./puzzleSlice";
 
 export const store = configureStore({
   reducer: {
     user: usersReducer,
+    puzzle: puzzleReducer,
   },
 });
 

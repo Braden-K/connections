@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import PlayScreen from "../screens/PlayScreen";
+import PlayStackNavigator from "./PlayStackNavigator";
 import CreateStackNavigator from "./CreateStackNavigator";
 import FriendsScreen from "../screens/FriendsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -14,7 +14,7 @@ const BaseTabNavigator = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen name="Play" component={PlayScreen} />
+      <Tab.Screen name="Play" component={PlayStackNavigator} />
       <Tab.Screen name="Create" component={CreateStackNavigator} />
       <Tab.Screen name="Friends" component={FriendsScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />

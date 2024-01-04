@@ -1,8 +1,19 @@
-export type Tile = string | null;
-
 export type Category = {
   descriptor: string;
-  tiles: [Tile, Tile, Tile, Tile];
+  tiles: [string, string, string, string];
 };
 
-export type PuzzleBoard = [Category, Category, Category, Category];
+export type PuzzleBoard = {
+  puzzleId: string;
+  puzzle: [Category, Category, Category, Category];
+};
+
+export type PuzzleBoardPostQuery = [Category, Category, Category, Category];
+
+export type PuzzleCollectionFormat = {
+  categories: Array<string>;
+  tiles1: Array<string>;
+  tiles2: Array<string>;
+  tiles3: Array<string>;
+  tiles4: Array<string>;
+};
