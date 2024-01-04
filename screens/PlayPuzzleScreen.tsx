@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { shuffleArr } from "../utils/puzzleBoardUtils";
 import { Category } from "../types/PuzzleBoard";
 import { CORRECT_COLOR_ARRAY } from "../styles/constants";
+import CorrectPuzzleModal from "../components/CorrectPuzzleModal";
 
 const PlayPuzzleScreen = (props: {
   navigation: NativeStackNavigationProp<PlayStackParamList, "PlayPuzzle">;
@@ -25,6 +26,8 @@ const PlayPuzzleScreen = (props: {
   const [numMistakes, setNumMistakes] = useState<number>(0);
   const [correctColorOrder, setCorrectColorOrder] =
     useState<Array<string>>(CORRECT_COLOR_ARRAY);
+  const [correctModalVisible, setCorrectModalVisible] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (numMistakes === 4) {
@@ -33,6 +36,7 @@ const PlayPuzzleScreen = (props: {
 
     if (correctCategories.length === 4) {
       console.log("game won");
+      setCorrectModalVisible(true);
     }
   }, [numMistakes, correctCategories]);
 
@@ -67,6 +71,10 @@ const PlayPuzzleScreen = (props: {
     }
   };
 
+  const onPressDeselect = () => {
+    setPressedTiles([]);
+  };
+
   const generateXs = (numMistakes: number) => {
     let xs = "";
     for (let i = 0; i < 4 - numMistakes; i++) {
@@ -81,6 +89,12 @@ const PlayPuzzleScreen = (props: {
   return (
     <SafeAreaView style={playHomeScreenStyles.container}>
       <View style={playHomeScreenStyles.headerView}>
+        <CorrectPuzzleModal
+          visible={correctModalVisible}
+          categories={correctCategories}
+          colorOrder={correctColorOrder}
+          navigation={props.navigation}
+        />
         <Text style={playHomeScreenStyles.largeText}>Puzzle</Text>
         <PillButton
           text={generateXs(numMistakes)}
@@ -110,7 +124,7 @@ const PlayPuzzleScreen = (props: {
           text={"Deselect"}
           color={"black"}
           width={125}
-          onPress={onPressSubmit}
+          onPress={onPressDeselect}
         />
       </View>
     </SafeAreaView>

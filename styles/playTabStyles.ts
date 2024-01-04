@@ -83,3 +83,41 @@ export const playHomeScreenStyles = StyleSheet.create({
     justifyContent: "space-between",
   },
 });
+
+export const playModalStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    marginTop: 60,
+  },
+  winText: {
+    fontSize: 30,
+    fontFamily: "code",
+  },
+  miniModalBoardContainer: {
+    margin: 10,
+    marginBottom: 30,
+    width: width - 50,
+    height: width - 70,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  miniModalBoardRow: {
+    width: width - 50,
+    borderRadius: 5,
+    height: (width - 70) / 4 - 6,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  miniModalText: {
+    fontSize: 25,
+    fontFamily: "code",
+  },
+  buttonView: {
+    flexDirection: "row",
+    marginTop: 5,
+    marginBottom: 20,
+    justifyContent: "space-between",
+    width: width - 50,
+  },
+});
