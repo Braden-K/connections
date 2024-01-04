@@ -16,6 +16,15 @@ export const playPuzzleScreenStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
+  correctPuzzleBoardRow: {
+    width: width - 28,
+    height: SQUARE_SIZE,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    margin: 4,
+  },
   puzzleTile: {
     flex: 1,
     width: SQUARE_SIZE,
@@ -68,5 +77,9 @@ export const playHomeScreenStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     flexDirection: "row",
+  },
+  headerView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

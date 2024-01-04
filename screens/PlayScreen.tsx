@@ -28,6 +28,9 @@ const PlayScreen = (props: {
   const onPressMine = () => {
     // TODO: make logic more complex- allow user to choose puzzle; for testing purposes here
     const puzzle = userPuzzles[0];
+    for (const cat of puzzle.puzzle[0].tiles) {
+      console.log(cat);
+    }
     props.navigation.navigate("PlayPuzzle", { puzzle: puzzle });
   };
 

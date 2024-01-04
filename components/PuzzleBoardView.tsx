@@ -1,22 +1,34 @@
 import { View } from "react-native";
 import PuzzleBoardRow from "./PuzzleBoardRow";
-import { PuzzleBoard } from "../types/PuzzleBoard";
-import { shuffleArr } from "../utils/puzzleBoardUtils";
+import { Category, PuzzleBoard } from "../types/PuzzleBoard";
+import CorrectPuzzleBoardRow from "./CorrectPuzzleBoardRow";
 
-const PuzzleBoardView = (props: { puzzle: PuzzleBoard }) => {
-  const tileArr: Array<string> = [];
-  for (const tiles in props.puzzle.puzzle) {
-    tileArr.concat(tiles);
-  }
-  const shuffledTiles = shuffleArr(tileArr);
-
+const PuzzleBoardView = (props: {
+  puzzle: PuzzleBoard;
+  correctCategories: Array<Category>;
+  shuffledTiles: Array<string>;
+  pressedTiles: Array<string>;
+  correctColorOrder: Array<string>;
+  setPressedTiles: (tiles: Array<string>) => void;
+}) => {
   return (
     <View>
-      {Array(4)
+      {props.correctCategories.map((category, index) => (
+        <CorrectPuzzleBoardRow
+          category={category}
+          color={props.correctColorOrder[index]}
+          key={index}
+        />
+      ))}
+
+      {Array(4 - props.correctCategories.length)
         .fill(0)
         .map((val, index) => (
           <PuzzleBoardRow
-            tiles={shuffledTiles.slice(index * 4, index * 4 + 4)}
+            tiles={props.shuffledTiles.slice(index * 4, index * 4 + 4)}
+            key={index}
+            pressedTiles={props.pressedTiles}
+            setPressedTiles={props.setPressedTiles}
           />
         ))}
     </View>
