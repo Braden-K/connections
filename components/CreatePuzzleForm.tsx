@@ -21,6 +21,7 @@ import { RootState } from "../redux/store";
 import { pushUserPuzzle } from "../redux/puzzleSlice";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CreateStackParamList } from "../types/navigation";
+import RectangularButton from "./RectangularButton";
 
 export const CreatePuzzleForm = (props: {
   navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
@@ -187,9 +188,14 @@ export const CreatePuzzleForm = (props: {
         onChangeText={(text: string) => setT4d(text)}
         value={t4d}
       />
-      <TouchableOpacity onPress={handleSubmit}>
-        <Text>Create Puzzle</Text>
-      </TouchableOpacity>
+      <View style={{ alignItems: "center", marginTop: 10 }}>
+        <RectangularButton
+          onPress={handleSubmit}
+          text={"Create Puzzle"}
+          color={"black"}
+          width={200}
+        />
+      </View>
     </SafeAreaView>
   );
 };

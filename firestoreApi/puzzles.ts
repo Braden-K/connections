@@ -5,6 +5,8 @@ import {
   collection,
   doc,
   getDocs,
+  limit,
+  orderBy,
   query,
   setDoc,
   where,
@@ -16,6 +18,7 @@ import {
   PuzzleBoardPostQuery,
   PuzzleCollectionFormat,
 } from "../types/PuzzleBoard";
+import { get } from "http";
 
 const puzzlesCollection = collection(db, "puzzles");
 
@@ -67,8 +70,14 @@ export const postApiPuzzle = async (
 ): Promise<string> => {
   const puzzleData = puzzleBoardToCollectionFormat(puzzleBoard);
 
+  const randomId = Math.floor(Math.random() * 10000);
+
   try {
-    const docRef = await addDoc(puzzlesCollection, { ...puzzleData, userId });
+    const docRef = await addDoc(puzzlesCollection, {
+      ...puzzleData,
+      userId,
+      randomId,
+    });
     const puzzleId = docRef.id;
     return puzzleId;
   } catch {
@@ -82,7 +91,6 @@ export const postApiPuzzle = async (
 export const getApiPuzzlesByUserId = async (
   userId: string
 ): Promise<Array<PuzzleBoard>> => {
-  console.log("in getPuzzleApi with userId", userId);
   const getPuzzlesQuery: Query<DocumentData, DocumentData> = query(
     puzzlesCollection,
     where("userId", "==", userId)
@@ -113,4 +121,104 @@ export const getApiPuzzlesByUserId = async (
     };
   }
   return [];
+};
+
+const publicPuzzlesExist = async (
+  loggedInUserId: string
+): Promise<boolean | null> => {
+  try {
+    const publicsExistQuery: Query<DocumentData, DocumentData> = query(
+      puzzlesCollection,
+      where(loggedInUserId, "!=", "userId"),
+      limit(1)
+    );
+
+    const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
+      await getDocs(publicsExistQuery);
+
+    return querySnapshot.empty;
+  } catch {
+    (e: Error) => {
+      console.log("error in isCollectionEmpty", e.message);
+    };
+  }
+  return null;
+};
+
+const fetchPublicPuzzleFromQuery = async (
+  query: Query<DocumentData, DocumentData>,
+  userId: string
+) => {
+  try {
+    const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
+      await getDocs(query);
+    let puzzleBoard: PuzzleBoard | null = null;
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
+        const { categories, tiles1, tiles2, tiles3, tiles4 } = doc.data();
+        if (doc.data().userId !== userId) {
+          puzzleBoard = collectionFormatToPuzzleBoard(doc.id, {
+            categories,
+            tiles1,
+            tiles2,
+            tiles3,
+            tiles4,
+          });
+        }
+      });
+      return puzzleBoard;
+    }
+    return null;
+  } catch {
+    (e: Error) => {
+      console.log("error fetching puzzle data", e.message);
+    };
+  }
+  return null;
+};
+
+export const getApiRandomPublicPuzzle = async (
+  userId: string
+): Promise<PuzzleBoard | null> => {
+  if (!(await publicPuzzlesExist(userId))) {
+    return null;
+  }
+
+  const getHigherRandomPuzzleQuery: Query<DocumentData, DocumentData> = query(
+    puzzlesCollection,
+    where("randomId", ">=", Math.floor(Math.random() * 10000)),
+    orderBy("randomId"),
+    limit(1)
+  );
+
+  const getLowerRandomPuzzleQuery: Query<DocumentData, DocumentData> = query(
+    puzzlesCollection,
+    where("randomId", "<", Math.floor(Math.random() * 10000)),
+    orderBy("randomId", "desc"),
+    limit(1)
+  );
+
+  let randomPuzzle: PuzzleBoard | null = null;
+
+  while (!randomPuzzle) {
+    try {
+      const puzzleBoard = await fetchPublicPuzzleFromQuery(
+        getHigherRandomPuzzleQuery,
+        userId
+      );
+      if (puzzleBoard) {
+        randomPuzzle = puzzleBoard;
+      } else {
+        randomPuzzle = await fetchPublicPuzzleFromQuery(
+          getLowerRandomPuzzleQuery,
+          userId
+        );
+      }
+    } catch {
+      (e: Error) => {
+        console.log("error fetching puzzle data", e.message);
+      };
+    }
+  }
+  return randomPuzzle;
 };

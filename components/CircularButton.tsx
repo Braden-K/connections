@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { myPuzzlesScreenStyles } from "../styles/createTabStyles";
 
 const CircularButton = (props: {
@@ -7,17 +7,19 @@ const CircularButton = (props: {
   onPress: () => void;
 }) => {
   return (
-    <TouchableOpacity
-      style={{
-        ...myPuzzlesScreenStyles.circularButton,
-        borderColor: props.color,
-      }}
-      onPress={props.onPress}
-    >
-      <Text style={{ color: props.color, fontFamily: "code", fontSize: 25 }}>
-        {props.text}
-      </Text>
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity
+        style={{
+          ...myPuzzlesScreenStyles.circularButton,
+          borderColor: props.color,
+        }}
+        onPress={props.onPress}
+      >
+        <Text style={{ color: props.color, fontFamily: "code", fontSize: 25 }}>
+          {props.text}
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 

@@ -49,6 +49,7 @@ const CorrectPuzzleModal = (props: {
         <RectangularButton
           text={"Go Home"}
           color={"black"}
+          width={100}
           onPress={() => {
             props.navigation.navigate("PlayHome");
           }}

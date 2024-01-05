@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const width = Dimensions.get("window").width;
 
 export const myPuzzlesScreenStyles = StyleSheet.create({
   circularButton: {
@@ -19,11 +21,8 @@ export const myPuzzlesScreenStyles = StyleSheet.create({
     margin: 10,
   },
   puzzleRow: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    margin: 5,
+    height: 50,
+    width: width - 50,
   },
 });
 
@@ -46,5 +45,6 @@ export const createPuzzleScreenStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    margin: 10,
   },
 });

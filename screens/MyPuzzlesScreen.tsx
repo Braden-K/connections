@@ -1,13 +1,13 @@
-import { Text, SafeAreaView, View } from "react-native";
+import { Text, SafeAreaView, View, FlatList } from "react-native";
 import { myPuzzlesScreenStyles } from "../styles/createTabStyles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { CreateStackParamList } from "../types/navigation";
+import { CreateStackParamList, PlayStackParamList } from "../types/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { PuzzleBoard } from "../types/PuzzleBoard";
 import { playHomeScreenStyles } from "../styles/playTabStyles";
-import MyPuzzleRow from "../components/MyPuzzleRow";
 import PillButton from "../components/PillButton";
+import RectangularButton from "../components/RectangularButton";
 
 const MyPuzzlesScreen = (props: {
   navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
@@ -15,21 +15,6 @@ const MyPuzzlesScreen = (props: {
   const userPuzzles: Array<PuzzleBoard> = useSelector(
     (state: RootState) => state.puzzle.userPuzzles
   );
-
-  const groupIntoThrees = (arr: Array<string>) => {
-    const result: Array<Array<string>> = [];
-    for (let i = 0; i < arr.length; i += 3) {
-      result.push(arr.slice(i, i + 3));
-    }
-    return result;
-  };
-
-  const puzzleIds: Array<string> = userPuzzles.map((puzzle) => puzzle.puzzleId);
-  const puzzleIdsForRows: Array<Array<string>> = groupIntoThrees(puzzleIds);
-  const labels: Array<string> = Array(puzzleIds.length)
-    .fill(0)
-    .map((_, index) => (index + 1).toString());
-  const labelsForRows: Array<Array<string>> = groupIntoThrees(labels);
 
   const onPlusPress = () => {
     props.navigation.navigate("CreatePuzzle");
@@ -52,14 +37,28 @@ const MyPuzzlesScreen = (props: {
           onPress={onPlusPress}
         />
       </View>
-      <View style={{ flex: 1 }}>
-        {puzzleIdsForRows.map((puzzleIdsForRow, index) => (
-          <MyPuzzleRow
-            key={index}
-            puzzleIds={puzzleIdsForRow}
-            labels={labelsForRows[index]}
-          />
-        ))}
+      <View style={{ flex: 1, marginTop: 20 }}>
+        {userPuzzles.length === 0 ? (
+          <Text style={{ fontFamily: "code", fontSize: 20 }}>
+            You have no puzzles yet!
+          </Text>
+        ) : (
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <FlatList
+              data={userPuzzles}
+              renderItem={({ item }) => (
+                <View style={{ marginBottom: 10 }}>
+                  <RectangularButton
+                    text={(userPuzzles.indexOf(item) + 1).toString()}
+                    color={"black"}
+                    width={300}
+                    onPress={() => {}}
+                  />
+                </View>
+              )}
+            />
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );

@@ -4,6 +4,7 @@ import { playHomeScreenStyles } from "../styles/playTabStyles";
 const RectangularButton = (props: {
   text: string;
   color: string;
+  width: number;
   onPress: () => void;
 }) => {
   return (
@@ -11,6 +12,7 @@ const RectangularButton = (props: {
       style={{
         ...playHomeScreenStyles.rectangularButton,
         borderColor: props.color,
+        width: props.width,
       }}
       onPress={props.onPress}
     >
