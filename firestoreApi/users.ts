@@ -157,6 +157,28 @@ export const getApiPendingUserFriendRequests = async (
   return [];
 };
 
+export const getApiUserFriends = async (userId: string): Promise<User[]> => {
+  const getUserQuery: Query<DocumentData, DocumentData> = query(
+    usersRef,
+    where("friends", "array-contains", userId)
+  );
+
+  try {
+    const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
+      await getDocs(getUserQuery);
+    let users: User[] = [];
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc) => {
+        users.push({ ...doc.data(), id: doc.id } as User);
+      });
+    }
+    return users;
+  } catch {
+    console.error("error fetching user's friends list");
+  }
+  return [];
+};
+
 export const putApiUserFriendById = async (
   userId: string,
   friendId: string

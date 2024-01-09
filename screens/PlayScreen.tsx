@@ -19,7 +19,7 @@ const PlayScreen = (props: {
 
   const user = useSelector((state: RootState) => state.user.user);
 
-  const onPressLatest = async () => {
+  const onPressLevels = async () => {
     console.log(userPuzzles);
     console.log("create query to get latest");
   };
@@ -50,10 +50,10 @@ const PlayScreen = (props: {
       <Text style={playHomeScreenStyles.largeText}>Play</Text>
       <View style={playHomeScreenStyles.playButtonView}>
         <PillButton
-          text={"Latest"}
+          text={"Levels"}
           color={"black"}
           width={100}
-          onPress={onPressLatest}
+          onPress={onPressLevels}
         />
         <PillButton
           text={"Random"}

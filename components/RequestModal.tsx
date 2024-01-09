@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { User } from "../types/User";
 import { loadUser } from "../redux/userSlice";
-import UserListing from "./UserSearchListing";
+import UserListing from "./UserListing";
 import {
   deleteApiUserFriendRequest,
   getApiUserById,
@@ -25,6 +25,9 @@ const RequestModal = (props: {
   const handleAddBack = async (friendId: string) => {
     await deleteApiUserFriendRequest(friendId, currentUser.id);
     await putApiUserFriendById(currentUser.id, friendId);
+    props.setRequestingUsers(
+      props.requestingUsers.filter((user) => user.id != friendId)
+    );
     const refreshedUser = await getApiUserById(currentUser.id);
     if (refreshedUser) {
       dispatch(loadUser({ user: refreshedUser }));
@@ -57,9 +60,9 @@ const RequestModal = (props: {
                 return (
                   <UserListing
                     key={index}
-                    isSearch={true}
+                    isSearch={false}
                     username={user.username}
-                    requested={true}
+                    requested={false}
                     added={false}
                     onPress={() => handleAddBack(user.id)}
                   />

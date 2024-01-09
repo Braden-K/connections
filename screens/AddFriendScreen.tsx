@@ -10,7 +10,7 @@ import { addFriendScreenStyles } from "../styles/friendsTabStyles";
 import { useState } from "react";
 import { getApiUserByUsernameFragment } from "../firestoreApi/users";
 import { User } from "../types/User";
-import UserListing from "../components/UserSearchListing";
+import UserListing from "../components/UserListing";
 import { putApiUserFriendRequestById } from "../firestoreApi/users";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";

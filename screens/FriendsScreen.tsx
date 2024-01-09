@@ -1,15 +1,19 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { friendsScreenStyles } from "../styles/friendsTabStyles";
 import PillButton from "../components/PillButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FriendsStackParamList } from "../types/navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import RequestModal from "../components/RequestModal";
 import { User } from "../types/User";
-import { getApiPendingUserFriendRequests } from "../firestoreApi/users";
+import {
+  getApiUserFriends,
+  getApiPendingUserFriendRequests,
+} from "../firestoreApi/users";
 import { RootState } from "../redux/store";
 import { useSelector } from "react-redux";
+import FriendListing from "../components/FriendListing";
 
 const FriendsScreen = (props: {
   navigation: NativeStackNavigationProp<FriendsStackParamList, "FriendsHome">;
@@ -18,6 +22,15 @@ const FriendsScreen = (props: {
   const [reuqestModalVisible, setRequestModalVisible] =
     useState<boolean>(false);
   const [requestingUsers, setRequestingUsers] = useState<User[]>([]);
+  const [friends, setFriends] = useState<User[]>([]);
+
+  useEffect(() => {
+    const getUserFriends = async () => {
+      const friends: User[] = await getApiUserFriends(currentUser.id);
+      setFriends(friends);
+    };
+    getUserFriends();
+  }, []);
 
   const handlePressRequests = async () => {
     const users = await getApiPendingUserFriendRequests(currentUser.id);
@@ -48,6 +61,15 @@ const FriendsScreen = (props: {
           color="black"
           width={150}
           onPress={handlePressRequests}
+        />
+      </View>
+      <View style={{ marginTop: 20 }}>
+        <FlatList
+          data={friends}
+          renderItem={({ item }) => (
+            <FriendListing username={item.username} onPress={() => {}} />
+          )}
+          keyExtractor={(item) => item.id}
         />
       </View>
     </SafeAreaView>
