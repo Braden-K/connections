@@ -1,8 +1,5 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import {
   Category,
-  PermissionType,
   PuzzleBoard,
   PuzzleBoardPostQuery,
 } from "../types/PuzzleBoard";
@@ -26,6 +23,28 @@ import RectangularButton from "./RectangularButton";
 import PuzzlePermissionsModal from "./PuzzlePermissionModal";
 import { Permission } from "../types/PuzzleBoard";
 
+const initForm = {
+  puzzle: [
+    {
+      descriptor: "",
+      tiles: ["", "", "", ""],
+    },
+    {
+      descriptor: "",
+      tiles: ["", "", "", ""],
+    },
+    {
+      descriptor: "",
+      tiles: ["", "", "", ""],
+    },
+    {
+      descriptor: "",
+      tiles: ["", "", "", ""],
+    },
+  ],
+  permission: Permission.PUBLIC,
+} as PuzzleBoardPostQuery;
+
 export const CreatePuzzleForm = (props: {
   navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
 }) => {
@@ -33,9 +52,12 @@ export const CreatePuzzleForm = (props: {
   const dispatch = useDispatch();
   const [permissionsModalVisible, setPermissionsModalVisible] =
     useState<boolean>(false);
-  const [permissionType, setPermissionType] = useState<PermissionType>(
+  const [permissionType, setPermissionType] = useState<Permission>(
     Permission.PUBLIC
   );
+
+  const [puzzleFormData, setPuzzleFormData] =
+    useState<PuzzleBoardPostQuery>(initForm);
 
   const [des1, setDes1] = useState<string>("");
   const [t1a, setT1a] = useState<string>("");
@@ -67,10 +89,19 @@ export const CreatePuzzleForm = (props: {
     const c3: Category = { descriptor: des3, tiles: [t3a, t3b, t3c, t3d] };
     const c4: Category = { descriptor: des4, tiles: [t4a, t4b, t4c, t4d] };
 
-    const puzzleBoard: PuzzleBoardPostQuery = [c1, c2, c3, c4];
+    const puzzleBoard: PuzzleBoardPostQuery = {
+      puzzle: [c1, c2, c3, c4],
+      permission: permissionType,
+    };
 
     const puzzleId = await postApiPuzzle(user.id, puzzleBoard);
-    dispatch(pushUserPuzzle({ puzzleId, puzzle: puzzleBoard }));
+    dispatch(
+      pushUserPuzzle({
+        puzzleId,
+        puzzle: puzzleBoard.puzzle,
+        permission: permissionType,
+      })
+    );
     props.navigation.navigate("MyPuzzles");
   };
 
@@ -78,7 +109,7 @@ export const CreatePuzzleForm = (props: {
     <SafeAreaView style={createPuzzleScreenStyles.container}>
       <PuzzlePermissionsModal
         visible={permissionsModalVisible}
-        onClose={handleFinalSubmit}
+        onCreate={handleFinalSubmit}
         permission={permissionType}
         setPermission={setPermissionType}
       />

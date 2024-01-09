@@ -18,7 +18,7 @@ import {
   PuzzleBoardPostQuery,
   PuzzleCollectionFormat,
 } from "../types/PuzzleBoard";
-import { get } from "http";
+import { Permission } from "../types/PuzzleBoard";
 
 const puzzlesCollection = collection(db, "puzzles");
 
@@ -27,16 +27,17 @@ const puzzleBoardToCollectionFormat = (
 ): PuzzleCollectionFormat => {
   const categories: Array<string> = [];
 
-  for (const category of pb) {
+  for (const category of pb.puzzle) {
     categories.push(category.descriptor);
   }
 
   return {
     categories,
-    tiles1: pb[0].tiles,
-    tiles2: pb[1].tiles,
-    tiles3: pb[2].tiles,
-    tiles4: pb[3].tiles,
+    tiles1: pb.puzzle[0].tiles,
+    tiles2: pb.puzzle[1].tiles,
+    tiles3: pb.puzzle[2].tiles,
+    tiles4: pb.puzzle[3].tiles,
+    permission: pb.permission,
   };
 };
 
@@ -61,7 +62,12 @@ const collectionFormatToPuzzleBoard = (
     tiles: [cf.tiles4[0], cf.tiles4[1], cf.tiles4[2], cf.tiles4[3]],
   };
 
-  return { puzzleId, puzzle: [c1, c2, c3, c4] };
+  return {
+    puzzleId,
+    puzzle: [c1, c2, c3, c4],
+    permission:
+      Permission[cf.permission.toUpperCase() as keyof typeof Permission],
+  };
 };
 
 export const postApiPuzzle = async (
@@ -102,13 +108,15 @@ export const getApiPuzzlesByUserId = async (
     let puzzleBoards: Array<PuzzleBoard> = [];
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc: DocumentData) => {
-        const { categories, tiles1, tiles2, tiles3, tiles4 } = doc.data();
+        const { categories, tiles1, tiles2, tiles3, tiles4, permission } =
+          doc.data();
         const puzzleBoard = collectionFormatToPuzzleBoard(doc.id, {
           categories,
           tiles1,
           tiles2,
           tiles3,
           tiles4,
+          permission,
         });
         puzzleBoards.push(puzzleBoard);
       });
@@ -155,7 +163,8 @@ const fetchPublicPuzzleFromQuery = async (
     let puzzleBoard: PuzzleBoard | null = null;
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-        const { categories, tiles1, tiles2, tiles3, tiles4 } = doc.data();
+        const { categories, tiles1, tiles2, tiles3, tiles4, permission } =
+          doc.data();
         if (doc.data().userId !== userId) {
           puzzleBoard = collectionFormatToPuzzleBoard(doc.id, {
             categories,
@@ -163,6 +172,7 @@ const fetchPublicPuzzleFromQuery = async (
             tiles2,
             tiles3,
             tiles4,
+            permission,
           });
         }
       });

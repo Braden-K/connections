@@ -75,4 +75,17 @@ export const permissionsModalStyles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
+  checkBoxOuter: {
+    marginTop: 25,
+    marginBottom: 35,
+  },
+  checkBoxInner: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  checkBoxText: {
+    fontFamily: "code",
+    fontSize: 20,
+  },
 });

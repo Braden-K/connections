@@ -6,9 +6,13 @@ export type Category = {
 export type PuzzleBoard = {
   puzzleId: string;
   puzzle: [Category, Category, Category, Category];
+  permission: PermissionType;
 };
 
-export type PuzzleBoardPostQuery = [Category, Category, Category, Category];
+export type PuzzleBoardPostQuery = {
+  puzzle: [Category, Category, Category, Category];
+  permission: PermissionType;
+};
 
 export type PuzzleCollectionFormat = {
   categories: Array<string>;
@@ -16,12 +20,13 @@ export type PuzzleCollectionFormat = {
   tiles2: Array<string>;
   tiles3: Array<string>;
   tiles4: Array<string>;
+  permission: string;
 };
 
-enum Permission {
-  PRIVATE,
-  PUBLIC,
-  FRIENDS_ONLY,
+export enum Permission {
+  PRIVATE = "private",
+  PUBLIC = "public",
+  FRIENDS_ONLY = "friends_only",
 }
 
 export type PermissionType = Permission;
