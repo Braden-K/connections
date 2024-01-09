@@ -138,7 +138,7 @@ export const getApiPendingUserFriendRequests = async (
 ): Promise<Array<User>> => {
   const getUserQuery: Query<DocumentData, DocumentData> = query(
     usersRef,
-    where(userId, "in", "friendRequests")
+    where("friendRequests", "array-contains", userId)
   );
 
   try {

@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
 
-const { width } = Dimensions.get("window");
+export const { width } = Dimensions.get("window");
 
 export const friendsScreenStyles = StyleSheet.create({
   container: {
@@ -82,6 +82,7 @@ export const requestModalStyles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 3.0,
     width: width - 50,
+    height: width,
   },
   modalHeader: {
     flexDirection: "row",

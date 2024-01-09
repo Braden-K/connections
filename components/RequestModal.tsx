@@ -10,7 +10,8 @@ import {
   getApiUserById,
   putApiUserFriendById,
 } from "../firestoreApi/users";
-import { ref } from "yup";
+import { width } from "../styles/friendsTabStyles";
+import PillButton from "./PillButton";
 
 const RequestModal = (props: {
   visible: boolean;
@@ -39,26 +40,52 @@ const RequestModal = (props: {
       <View style={requestModalStyles.modalContainer}>
         <View style={requestModalStyles.modalContent}>
           <View style={requestModalStyles.modalHeader}>
-            <TouchableOpacity onPress={props.close}>
-              <Text style={{ fontSize: 15, fontWeight: "bold" }}>X</Text>
-            </TouchableOpacity>
-            <Text style={{ fontFamily: "code", fontSize: 20 }}>Requests</Text>
+            {props.requestingUsers.length >= 1 && (
+              <TouchableOpacity onPress={props.close}>
+                <Text style={{ fontSize: 15, fontWeight: "bold" }}>X</Text>
+              </TouchableOpacity>
+            )}
+            <Text style={{ fontFamily: "code", fontSize: 20 }}>
+              {props.requestingUsers.length >= 1 ? "Requests" : ""}
+            </Text>
             <Text></Text>
           </View>
-        </View>
-        <View>
-          {props.requestingUsers.map((user, index) => {
-            return (
-              <UserListing
-                key={index}
-                isSearch={true}
-                username={user.username}
-                requested={true}
-                added={false}
-                onPress={() => handleAddBack(user.id)}
-              />
-            );
-          })}
+
+          <View>
+            {props.requestingUsers.length >= 1 ? (
+              props.requestingUsers.map((user, index) => {
+                return (
+                  <UserListing
+                    key={index}
+                    isSearch={true}
+                    username={user.username}
+                    requested={true}
+                    added={false}
+                    onPress={() => handleAddBack(user.id)}
+                  />
+                );
+              })
+            ) : (
+              <View style={{ alignItems: "center" }}>
+                <Text
+                  style={{
+                    fontSize: 25,
+                    fontFamily: "code",
+                    marginTop: 80,
+                    marginBottom: 20,
+                  }}
+                >
+                  No Pending Requests!
+                </Text>
+                <PillButton
+                  text={"close"}
+                  color={"black"}
+                  width={100}
+                  onPress={props.close}
+                />
+              </View>
+            )}
+          </View>
         </View>
       </View>
     </Modal>
