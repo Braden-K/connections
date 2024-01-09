@@ -10,7 +10,8 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    loginUser: (state, action: PayloadAction<UserState>) => {
+    loadUser: (state, action: PayloadAction<UserState>) => {
+      console.log("init user login", action.payload);
       return action.payload;
     },
     pushFriend: (state, action: PayloadAction<string>) => {
@@ -34,5 +35,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { loginUser } = userSlice.actions;
+export const { loadUser, pushFriend, pushFriendRequest } = userSlice.actions;
 export default userSlice.reducer;

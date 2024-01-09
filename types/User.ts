@@ -9,4 +9,6 @@ export type User = {
 export type UserInitialization = {
   username: string;
   email: string;
+  friends: Array<string>;
+  friendRequests: Array<string>;
 };

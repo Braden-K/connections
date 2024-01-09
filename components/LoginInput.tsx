@@ -5,7 +5,7 @@ import { globalComponentStyles } from "../styles/globalStyles";
 import { postApiLoginUser } from "../firestoreApi/users";
 import { getApiUserByEmail } from "../firestoreApi/users";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../redux/userSlice";
+import { loadUser } from "../redux/userSlice";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation";
 import { getApiPuzzlesByUserId } from "../firestoreApi/puzzles";
@@ -24,7 +24,7 @@ const LoginInput = (props: {
     if (loginSuccess) {
       const user = await getApiUserByEmail(email);
       if (user !== null) {
-        dispatch(loginUser({ user: user }));
+        dispatch(loadUser({ user: user }));
         const userPuzzles = await getApiPuzzlesByUserId(user.id);
         dispatch(pushAllUserPuzzles(userPuzzles));
         props.navigation.navigate("Home");

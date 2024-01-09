@@ -9,15 +9,33 @@ import { friendsScreenStyles } from "../styles/friendsTabStyles";
 import { addFriendScreenStyles } from "../styles/friendsTabStyles";
 import { useState } from "react";
 import { getApiUserByUsernameFragment } from "../firestoreApi/users";
-import { User } from "firebase/auth";
+import { User } from "../types/User";
+import UserListing from "../components/UserSearchListing";
+import { putApiUserFriendRequestById } from "../firestoreApi/users";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { pushFriendRequest } from "../redux/userSlice";
 
 const AddFriendScreen = () => {
+  const currentUser = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch();
   const [searchPhrase, setSearchPhrase] = useState<string>("");
-  const [users, setUsers] = useState<Array<User>>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   const onUsernameSearch = async () => {
-    const searchResults = await getApiUserByUsernameFragment(searchPhrase);
-    setUsers(searchResults);
+    if (searchPhrase == "") {
+      setUsers([]);
+    } else {
+      const searchResults: User[] = await getApiUserByUsernameFragment(
+        searchPhrase
+      );
+      setUsers(searchResults);
+    }
+  };
+
+  const handleFriendRequest = async (userId: string) => {
+    await putApiUserFriendRequestById(currentUser.id, userId);
+    dispatch(pushFriendRequest(userId));
   };
 
   return (
@@ -37,6 +55,20 @@ const AddFriendScreen = () => {
         >
           <Text>Search</Text>
         </TouchableOpacity>
+      </View>
+      <View>
+        {users.map((user: User, index) => {
+          return (
+            <UserListing
+              key={index}
+              isSearch={true}
+              username={user.username}
+              requested={currentUser.friendRequests.includes(user.id)}
+              added={currentUser.friends.includes(user.id)}
+              onPress={() => handleFriendRequest(user.id)}
+            />
+          );
+        })}
       </View>
     </SafeAreaView>
   );

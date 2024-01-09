@@ -1,6 +1,7 @@
 import { db } from "../firebaseConfig";
 import {
   QueryDocumentSnapshot,
+  arrayRemove,
   arrayUnion,
   collection,
   doc,
@@ -48,7 +49,12 @@ export const postApiSignUpUser = async (
       password
     );
 
-    const user: UserInitialization = { email, username };
+    const user: UserInitialization = {
+      email,
+      username,
+      friends: [],
+      friendRequests: ["null"],
+    };
 
     await postApiUser(user);
 
@@ -92,10 +98,10 @@ export const getApiUserByEmail = async (
   try {
     const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
       await getDocs(getUserQuery);
-    let userData = null;
+    let userData: User | null = null;
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
-        userData = { ...doc.data(), id: doc.id };
+        userData = { ...doc.data(), id: doc.id } as User;
       });
     }
     return userData;
@@ -125,6 +131,30 @@ export const getApiUserById = async (id: string): Promise<User | null> => {
     console.error("error fetching user with id", id);
   }
   return null;
+};
+
+export const getApiPendingUserFriendRequests = async (
+  userId: string
+): Promise<Array<User>> => {
+  const getUserQuery: Query<DocumentData, DocumentData> = query(
+    usersRef,
+    where(userId, "in", "friendRequests")
+  );
+
+  try {
+    const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
+      await getDocs(getUserQuery);
+    let users: User[] = [];
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc) => {
+        users.push({ ...doc.data(), id: doc.id } as User);
+      });
+    }
+    return users;
+  } catch {
+    console.error("error fetching user's pending requests");
+  }
+  return [];
 };
 
 export const putApiUserFriendById = async (
@@ -217,7 +247,7 @@ export const getApiUserByUsernameFragment = async (
     let userDataArr: Array<User> = [];
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
-        userDataArr.push({ ...doc.data(), id: doc.id });
+        userDataArr.push({ ...doc.data(), id: doc.id } as User);
       });
     }
     return userDataArr;
@@ -225,4 +255,19 @@ export const getApiUserByUsernameFragment = async (
     console.error("error fetching users based on username phrase");
   }
   return [];
+};
+
+export const deleteApiUserFriendRequest = async (
+  userId: string,
+  friendId: string
+) => {
+  try {
+    const userDocRef = doc(usersRef, userId);
+
+    await updateDoc(userDocRef, {
+      friendRequests: arrayRemove(friendId),
+    });
+  } catch {
+    console.log("error deleting friendId from user's requests");
+  }
 };
