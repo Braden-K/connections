@@ -2,6 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import {
   Category,
+  PermissionType,
   PuzzleBoard,
   PuzzleBoardPostQuery,
 } from "../types/PuzzleBoard";
@@ -22,12 +23,19 @@ import { pushUserPuzzle } from "../redux/puzzleSlice";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CreateStackParamList } from "../types/navigation";
 import RectangularButton from "./RectangularButton";
+import PuzzlePermissionsModal from "./PuzzlePermissionModal";
+import { Permission } from "../types/PuzzleBoard";
 
 export const CreatePuzzleForm = (props: {
   navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
 }) => {
   const user = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
+  const [permissionsModalVisible, setPermissionsModalVisible] =
+    useState<boolean>(false);
+  const [permissionType, setPermissionType] = useState<PermissionType>(
+    Permission.PUBLIC
+  );
 
   const [des1, setDes1] = useState<string>("");
   const [t1a, setT1a] = useState<string>("");
@@ -53,7 +61,7 @@ export const CreatePuzzleForm = (props: {
   const [t4c, setT4c] = useState<string>("");
   const [t4d, setT4d] = useState<string>("");
 
-  const handleSubmit = async () => {
+  const handleFinalSubmit = async () => {
     const c1: Category = { descriptor: des1, tiles: [t1a, t1b, t1c, t1d] };
     const c2: Category = { descriptor: des2, tiles: [t2a, t2b, t2c, t2d] };
     const c3: Category = { descriptor: des3, tiles: [t3a, t3b, t3c, t3d] };
@@ -68,6 +76,12 @@ export const CreatePuzzleForm = (props: {
 
   return (
     <SafeAreaView style={createPuzzleScreenStyles.container}>
+      <PuzzlePermissionsModal
+        visible={permissionsModalVisible}
+        onClose={handleFinalSubmit}
+        permission={permissionType}
+        setPermission={setPermissionType}
+      />
       <Text>1st Category name:</Text>
       <TextInput
         style={createPuzzleScreenStyles.categoryInput}
@@ -190,7 +204,7 @@ export const CreatePuzzleForm = (props: {
       />
       <View style={{ alignItems: "center", marginTop: 10 }}>
         <RectangularButton
-          onPress={handleSubmit}
+          onPress={() => setPermissionsModalVisible(true)}
           text={"Create Puzzle"}
           color={"black"}
           width={200}

@@ -17,3 +17,11 @@ export type PuzzleCollectionFormat = {
   tiles3: Array<string>;
   tiles4: Array<string>;
 };
+
+enum Permission {
+  PRIVATE,
+  PUBLIC,
+  FRIENDS_ONLY,
+}
+
+export type PermissionType = Permission;

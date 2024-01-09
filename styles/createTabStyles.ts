@@ -48,3 +48,31 @@ export const createPuzzleScreenStyles = StyleSheet.create({
     margin: 10,
   },
 });
+
+export const permissionsModalStyles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    paddingTop: 150,
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3.0,
+    width: width - 50,
+    height: width,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+  },
+});
