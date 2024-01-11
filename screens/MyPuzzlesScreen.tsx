@@ -1,7 +1,7 @@
 import { Text, SafeAreaView, View, FlatList } from "react-native";
 import { myPuzzlesScreenStyles } from "../styles/createTabStyles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { CreateStackParamList, PlayStackParamList } from "../types/navigation";
+import { CreateStackParamList } from "../types/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { PuzzleBoard } from "../types/PuzzleBoard";
@@ -12,9 +12,10 @@ import RectangularButton from "../components/RectangularButton";
 const MyPuzzlesScreen = (props: {
   navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
 }) => {
-  const userPuzzles: Array<PuzzleBoard> = useSelector(
+  let userPuzzles: Array<PuzzleBoard> = useSelector(
     (state: RootState) => state.puzzle.userPuzzles
   );
+  const user = useSelector((state: RootState) => state.user.user);
 
   const onPlusPress = () => {
     props.navigation.navigate("CreatePuzzle");

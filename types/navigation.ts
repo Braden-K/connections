@@ -19,9 +19,15 @@ export type PlayStackParamList = {
 };
 
 export type PlayPuzzleRouteProp = RouteProp<PlayStackParamList, "PlayPuzzle">;
+export type FriendsPuzzleRouteProp = RouteProp<
+  FriendsStackParamList,
+  "FriendsPuzzles"
+>;
 
 export type FriendsStackParamList = {
   FriendsHome: undefined;
   AddFriend: undefined;
   FriendRequests: undefined;
+  PlayPuzzle: { puzzle: PuzzleBoard };
+  FriendsPuzzles: { userId: string };
 };

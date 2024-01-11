@@ -30,12 +30,7 @@ const PlayPuzzleScreen = (props: {
     useState<boolean>(false);
 
   useEffect(() => {
-    if (numMistakes === 4) {
-      console.log("game over");
-    }
-
-    if (correctCategories.length === 4) {
-      console.log("game won");
+    if (numMistakes === 4 || correctCategories.length === 4) {
       setCorrectModalVisible(true);
     }
   }, [numMistakes, correctCategories]);
@@ -57,19 +52,18 @@ const PlayPuzzleScreen = (props: {
 
   const onPressSubmit = () => {
     for (const category of puzzle.puzzle) {
-      if (
-        !correctCategories.includes(category) &&
-        category.tiles.filter((tile) => pressedTiles.includes(tile)).length ===
-          4
-      ) {
-        setCorrectCategories(correctCategories.concat(category));
-        setPressedTiles([]);
-        return;
-      } else {
-        console.log("incorrect", category.descriptor);
-        setNumMistakes(numMistakes + 1);
+      if (!correctCategories.includes(category)) {
+        if (
+          category.tiles.filter((tile) => pressedTiles.includes(tile))
+            .length === 4
+        ) {
+          setCorrectCategories(correctCategories.concat(category));
+          setPressedTiles([]);
+          return;
+        }
       }
     }
+    setNumMistakes(numMistakes + 1);
   };
 
   const onPressDeselect = () => {
@@ -92,9 +86,13 @@ const PlayPuzzleScreen = (props: {
       <View style={playHomeScreenStyles.headerView}>
         <CorrectPuzzleModal
           visible={correctModalVisible}
-          categories={correctCategories}
+          categories={
+            correctCategories.length === 4 ? correctCategories : puzzle.puzzle
+          }
           colorOrder={correctColorOrder}
           navigation={props.navigation}
+          setVisible={setCorrectModalVisible}
+          correctPuzzle={numMistakes < 4}
         />
         <Text style={playHomeScreenStyles.largeText}>Puzzle</Text>
         <PillButton

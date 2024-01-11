@@ -67,7 +67,14 @@ const FriendsScreen = (props: {
         <FlatList
           data={friends}
           renderItem={({ item }) => (
-            <FriendListing username={item.username} onPress={() => {}} />
+            <FriendListing
+              username={item.username}
+              onPress={() => {
+                props.navigation.navigate("FriendsPuzzles", {
+                  userId: item.id,
+                });
+              }}
+            />
           )}
           keyExtractor={(item) => item.id}
         />

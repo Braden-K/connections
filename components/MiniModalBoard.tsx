@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import { Category, PuzzleBoard } from "../types/PuzzleBoard";
+import { Category } from "../types/PuzzleBoard";
 import { playModalStyles } from "../styles/playTabStyles";
 
 export const MiniModalBoard = (props: {
@@ -19,6 +19,10 @@ export const MiniModalBoard = (props: {
           >
             <Text style={playModalStyles.miniModalText}>
               {category.descriptor}
+            </Text>
+            <Text style={{ fontSize: 15, fontFamily: "code" }}>
+              {category.tiles[0]}, {category.tiles[1]}, {category.tiles[2]},{" "}
+              {category.tiles[3]}
             </Text>
           </View>
         );

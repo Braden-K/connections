@@ -20,6 +20,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { userInfo } from "os";
 
 const usersRef = collection(db, "users");
 
@@ -112,21 +113,12 @@ export const getApiUserByEmail = async (
 };
 
 export const getApiUserById = async (id: string): Promise<User | null> => {
-  const getUserQuery: Query<DocumentData, DocumentData> = query(
-    usersRef,
-    where("id", "==", id)
-  );
-
   try {
-    const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
-      await getDocs(getUserQuery);
-    let userData = null;
-    if (!querySnapshot.empty) {
-      querySnapshot.forEach((doc) => {
-        userData = { ...doc.data(), id: doc.id };
-      });
+    const userSnap = await getDoc(doc(usersRef, id));
+    if (userSnap.exists()) {
+      return userSnap.data() as User;
     }
-    return userData;
+    return null;
   } catch {
     console.error("error fetching user with id", id);
   }
