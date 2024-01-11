@@ -78,8 +78,6 @@ export const CreatePuzzleForm = (props: {
       permission: permissionType,
     };
 
-    console.log("board query created");
-
     const puzzleId = await postApiPuzzle(user.id, puzzleBoard);
     dispatch(
       pushUserPuzzle({

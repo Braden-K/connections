@@ -50,15 +50,15 @@ const collectionFormatToPuzzleBoard = (
     tiles: [cf.tiles1[0], cf.tiles1[1], cf.tiles1[2], cf.tiles1[3]],
   };
   const c2: Category = {
-    descriptor: cf.categories[0],
+    descriptor: cf.categories[1],
     tiles: [cf.tiles2[0], cf.tiles2[1], cf.tiles2[2], cf.tiles2[3]],
   };
   const c3: Category = {
-    descriptor: cf.categories[0],
+    descriptor: cf.categories[2],
     tiles: [cf.tiles3[0], cf.tiles3[1], cf.tiles3[2], cf.tiles3[3]],
   };
   const c4: Category = {
-    descriptor: cf.categories[0],
+    descriptor: cf.categories[3],
     tiles: [cf.tiles4[0], cf.tiles4[1], cf.tiles4[2], cf.tiles4[3]],
   };
 
@@ -74,7 +74,6 @@ export const postApiPuzzle = async (
   userId: string,
   puzzleBoard: PuzzleBoardPostQuery
 ): Promise<string> => {
-  console.log("in postApiPuzzle");
   const puzzleData = puzzleBoardToCollectionFormat(puzzleBoard);
 
   console.log(puzzleData);
@@ -82,8 +81,7 @@ export const postApiPuzzle = async (
   const randomId = Math.floor(Math.random() * 10000);
 
   try {
-    console.log("in try");
-    const docRef = await addDoc(collection(db, "puzzles"), {
+    const docRef = await addDoc(puzzlesCollection, {
       ...puzzleData,
       userId,
       randomId,
@@ -96,7 +94,6 @@ export const postApiPuzzle = async (
       console.log("error creating puzzle", e.message);
     };
   }
-  console.log("after try");
   return "";
 };
 

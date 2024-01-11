@@ -58,8 +58,9 @@ const PlayPuzzleScreen = (props: {
   const onPressSubmit = () => {
     for (const category of puzzle.puzzle) {
       if (
+        !correctCategories.includes(category) &&
         category.tiles.filter((tile) => pressedTiles.includes(tile)).length ===
-        4
+          4
       ) {
         setCorrectCategories(correctCategories.concat(category));
         setPressedTiles([]);
