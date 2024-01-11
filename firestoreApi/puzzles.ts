@@ -74,16 +74,21 @@ export const postApiPuzzle = async (
   userId: string,
   puzzleBoard: PuzzleBoardPostQuery
 ): Promise<string> => {
+  console.log("in postApiPuzzle");
   const puzzleData = puzzleBoardToCollectionFormat(puzzleBoard);
+
+  console.log(puzzleData);
 
   const randomId = Math.floor(Math.random() * 10000);
 
   try {
-    const docRef = await addDoc(puzzlesCollection, {
+    console.log("in try");
+    const docRef = await addDoc(collection(db, "puzzles"), {
       ...puzzleData,
       userId,
       randomId,
     });
+    console.log("after save to db");
     const puzzleId = docRef.id;
     return puzzleId;
   } catch {
@@ -91,6 +96,7 @@ export const postApiPuzzle = async (
       console.log("error creating puzzle", e.message);
     };
   }
+  console.log("after try");
   return "";
 };
 
@@ -128,6 +134,7 @@ export const getApiPuzzlesByUserId = async (
       console.log("error fetching puzzle data", e.message);
     };
   }
+  console.log("in getPuzzles, failed");
   return [];
 };
 

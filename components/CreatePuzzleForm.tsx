@@ -1,19 +1,9 @@
-import {
-  Category,
-  PuzzleBoard,
-  PuzzleBoardPostQuery,
-} from "../types/PuzzleBoard";
-import {
-  ScrollView,
-  TextInput,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { useState } from "react";
+import { Category, PuzzleBoardPostQuery } from "../types/PuzzleBoard";
+import { TextInput, View, Text } from "react-native";
+import { Fragment, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createPuzzleScreenStyles } from "../styles/createTabStyles";
-import { getApiPuzzlesByUserId, postApiPuzzle } from "../firestoreApi/puzzles";
+import { postApiPuzzle } from "../firestoreApi/puzzles";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { pushUserPuzzle } from "../redux/puzzleSlice";
@@ -22,28 +12,7 @@ import { CreateStackParamList } from "../types/navigation";
 import RectangularButton from "./RectangularButton";
 import PuzzlePermissionsModal from "./PuzzlePermissionModal";
 import { Permission } from "../types/PuzzleBoard";
-
-const initForm = {
-  puzzle: [
-    {
-      descriptor: "",
-      tiles: ["", "", "", ""],
-    },
-    {
-      descriptor: "",
-      tiles: ["", "", "", ""],
-    },
-    {
-      descriptor: "",
-      tiles: ["", "", "", ""],
-    },
-    {
-      descriptor: "",
-      tiles: ["", "", "", ""],
-    },
-  ],
-  permission: Permission.PUBLIC,
-} as PuzzleBoardPostQuery;
+import { CREATE_FORM_LABELS } from "../styles/constants";
 
 export const CreatePuzzleForm = (props: {
   navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
@@ -55,44 +24,61 @@ export const CreatePuzzleForm = (props: {
   const [permissionType, setPermissionType] = useState<Permission>(
     Permission.PUBLIC
   );
+  const [puzzleFormData, setPuzzleFormData] = useState<string[]>(
+    Array.from("".repeat(20))
+  );
+  const [invalidInput, setInvalidInput] = useState<boolean>(false);
 
-  const [puzzleFormData, setPuzzleFormData] =
-    useState<PuzzleBoardPostQuery>(initForm);
+  const invalidInputExists = () => {
+    const entrySet = new Set<string>(
+      puzzleFormData.map((entry) => {
+        if (!entry) {
+          return "";
+        } else {
+          return entry;
+        }
+      })
+    );
 
-  const [des1, setDes1] = useState<string>("");
-  const [t1a, setT1a] = useState<string>("");
-  const [t1b, setT1b] = useState<string>("");
-  const [t1c, setT1c] = useState<string>("");
-  const [t1d, setT1d] = useState<string>("");
+    if (entrySet.size < 20 || entrySet.has("")) {
+      return true;
+    }
+    return false;
+  };
 
-  const [des2, setDes2] = useState<string>("");
-  const [t2a, setT2a] = useState<string>("");
-  const [t2b, setT2b] = useState<string>("");
-  const [t2c, setT2c] = useState<string>("");
-  const [t2d, setT2d] = useState<string>("");
-
-  const [des3, setDes3] = useState<string>("");
-  const [t3a, setT3a] = useState<string>("");
-  const [t3b, setT3b] = useState<string>("");
-  const [t3c, setT3c] = useState<string>("");
-  const [t3d, setT3d] = useState<string>("");
-
-  const [des4, setDes4] = useState<string>("");
-  const [t4a, setT4a] = useState<string>("");
-  const [t4b, setT4b] = useState<string>("");
-  const [t4c, setT4c] = useState<string>("");
-  const [t4d, setT4d] = useState<string>("");
+  const handleInitialSubmit = () => {
+    if (invalidInputExists()) {
+      setInvalidInput(true);
+    }
+    setPermissionsModalVisible(true);
+  };
 
   const handleFinalSubmit = async () => {
-    const c1: Category = { descriptor: des1, tiles: [t1a, t1b, t1c, t1d] };
-    const c2: Category = { descriptor: des2, tiles: [t2a, t2b, t2c, t2d] };
-    const c3: Category = { descriptor: des3, tiles: [t3a, t3b, t3c, t3d] };
-    const c4: Category = { descriptor: des4, tiles: [t4a, t4b, t4c, t4d] };
+    const pfd = [...puzzleFormData];
+
+    const c1: Category = {
+      descriptor: pfd[0],
+      tiles: [pfd[1], pfd[2], pfd[3], pfd[4]],
+    };
+    const c2: Category = {
+      descriptor: pfd[5],
+      tiles: [pfd[6], pfd[7], pfd[8], pfd[9]],
+    };
+    const c3: Category = {
+      descriptor: pfd[10],
+      tiles: [pfd[11], pfd[12], pfd[13], pfd[14]],
+    };
+    const c4: Category = {
+      descriptor: pfd[15],
+      tiles: [pfd[16], pfd[17], pfd[18], pfd[19]],
+    };
 
     const puzzleBoard: PuzzleBoardPostQuery = {
       puzzle: [c1, c2, c3, c4],
       permission: permissionType,
     };
+
+    console.log("board query created");
 
     const puzzleId = await postApiPuzzle(user.id, puzzleBoard);
     dispatch(
@@ -105,137 +91,40 @@ export const CreatePuzzleForm = (props: {
     props.navigation.navigate("MyPuzzles");
   };
 
+  const setFormDataAtIndex = (index: number, data: string) => {
+    setPuzzleFormData([
+      ...puzzleFormData.slice(0, index),
+      data,
+      ...puzzleFormData.slice(index + 1, 20),
+    ]);
+  };
+
   return (
     <SafeAreaView style={createPuzzleScreenStyles.container}>
       <PuzzlePermissionsModal
         visible={permissionsModalVisible}
+        setVisible={setPermissionsModalVisible}
         onCreate={handleFinalSubmit}
         permission={permissionType}
         setPermission={setPermissionType}
+        invalidInput={invalidInput}
+        setInvalidInput={setInvalidInput}
       />
-      <Text>1st Category name:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.categoryInput}
-        onChangeText={(text: string) => setDes1(text)}
-        value={des1}
-      />
-      <Text>1st Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT1a(text)}
-        value={t1a}
-      />
-      <Text>2nd Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT1b(text)}
-        value={t1b}
-      />
-      <Text>3rd Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT1c(text)}
-        value={t1c}
-      />
-      <Text>4th Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT1d(text)}
-        value={t1d}
-      />
-      <Text>2nd Category name:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.categoryInput}
-        onChangeText={(text: string) => setDes2(text)}
-        value={des2}
-      />
-      <Text>1st Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT2a(text)}
-        value={t2a}
-      />
-      <Text>2nd Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT2b(text)}
-        value={t2b}
-      />
-      <Text>3rd Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT2c(text)}
-        value={t2c}
-      />
-      <Text>4th Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT2d(text)}
-        value={t2d}
-      />
-      <Text>3rd Category name:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.categoryInput}
-        onChangeText={(text: string) => setDes3(text)}
-        value={des3}
-      />
-      <Text>1st Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT3a(text)}
-        value={t3a}
-      />
-      <Text>2nd Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT3b(text)}
-        value={t3b}
-      />
-      <Text>3rd Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT3c(text)}
-        value={t3c}
-      />
-      <Text>4th Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT3d(text)}
-        value={t3d}
-      />
-      <Text>4th Category name:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.categoryInput}
-        onChangeText={(text: string) => setDes4(text)}
-        value={des4}
-      />
-      <Text>1st Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT4a(text)}
-        value={t4a}
-      />
-      <Text>2nd Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT4b(text)}
-        value={t4b}
-      />
-      <Text>3rd Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT4c(text)}
-        value={t4c}
-      />
-      <Text>4th Option:</Text>
-      <TextInput
-        style={createPuzzleScreenStyles.tileInput}
-        onChangeText={(text: string) => setT4d(text)}
-        value={t4d}
-      />
+      {CREATE_FORM_LABELS.map((label, index) => {
+        return (
+          <Fragment key={index}>
+            <Text>{label}</Text>
+            <TextInput
+              style={createPuzzleScreenStyles.categoryInput}
+              onChangeText={(text: string) => setFormDataAtIndex(index, text)}
+              value={puzzleFormData[index]}
+            />
+          </Fragment>
+        );
+      })}
       <View style={{ alignItems: "center", marginTop: 10 }}>
         <RectangularButton
-          onPress={() => setPermissionsModalVisible(true)}
+          onPress={handleInitialSubmit}
           text={"Create Puzzle"}
           color={"black"}
           width={200}
