@@ -15,7 +15,6 @@ const MyPuzzlesScreen = (props: {
   let userPuzzles: Array<PuzzleBoard> = useSelector(
     (state: RootState) => state.puzzle.userPuzzles
   );
-  const user = useSelector((state: RootState) => state.user.user);
 
   const onPlusPress = () => {
     props.navigation.navigate("CreatePuzzle");
@@ -53,7 +52,9 @@ const MyPuzzlesScreen = (props: {
                     text={(userPuzzles.indexOf(item) + 1).toString()}
                     color={"black"}
                     width={300}
-                    onPress={() => {}}
+                    onPress={() => {
+                      props.navigation.navigate("PlayPuzzle", { puzzle: item });
+                    }}
                   />
                 </View>
               )}

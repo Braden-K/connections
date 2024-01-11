@@ -16,6 +16,7 @@ import { CREATE_FORM_LABELS } from "../styles/constants";
 
 export const CreatePuzzleForm = (props: {
   navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
+  setIsLoading: (isLoading: boolean) => void;
 }) => {
   const user = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ export const CreatePuzzleForm = (props: {
   };
 
   const handleFinalSubmit = async () => {
+    props.setIsLoading(true);
     const pfd = [...puzzleFormData];
 
     const c1: Category = {
@@ -87,6 +89,7 @@ export const CreatePuzzleForm = (props: {
       })
     );
     props.navigation.navigate("MyPuzzles");
+    props.setIsLoading(false);
   };
 
   const setFormDataAtIndex = (index: number, data: string) => {

@@ -14,6 +14,7 @@ import {
 import { RootState } from "../redux/store";
 import { useSelector } from "react-redux";
 import FriendListing from "../components/FriendListing";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const FriendsScreen = (props: {
   navigation: NativeStackNavigationProp<FriendsStackParamList, "FriendsHome">;
@@ -23,13 +24,16 @@ const FriendsScreen = (props: {
     useState<boolean>(false);
   const [requestingUsers, setRequestingUsers] = useState<User[]>([]);
   const [friends, setFriends] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getUserFriends = async () => {
       const friends: User[] = await getApiUserFriends(currentUser.id);
       setFriends(friends);
     };
+    setIsLoading(true);
     getUserFriends();
+    setIsLoading(false);
   }, []);
 
   const handlePressRequests = async () => {
@@ -38,7 +42,9 @@ const FriendsScreen = (props: {
     setRequestModalVisible(true);
   };
 
-  return (
+  return isLoading ? (
+    <LoadingSpinner />
+  ) : (
     <SafeAreaView style={friendsScreenStyles.container}>
       <RequestModal
         visible={reuqestModalVisible}

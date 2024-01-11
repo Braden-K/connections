@@ -11,6 +11,7 @@ export type RootStackParamList = {
 export type CreateStackParamList = {
   MyPuzzles: undefined;
   CreatePuzzle: undefined;
+  PlayPuzzle: { puzzle: PuzzleBoard };
 };
 
 export type PlayStackParamList = {
