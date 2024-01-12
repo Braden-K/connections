@@ -37,6 +37,7 @@ const FriendsScreen = (props: {
   }, []);
 
   const handlePressRequests = async () => {
+    console.log(currentUser);
     const users = await getApiPendingUserFriendRequests(currentUser.id);
     setRequestingUsers(users);
     setRequestModalVisible(true);

@@ -3,7 +3,14 @@ import { RootState } from "./store";
 import { UserState } from "./types";
 
 const initialState: UserState = {
-  user: { id: "", username: "", email: "", friends: [], friendRequests: [] },
+  user: {
+    id: "",
+    username: "",
+    email: "",
+    friends: [],
+    friendRequests: [],
+    puzzlesSeen: [],
+  },
 };
 
 export const userSlice = createSlice({
@@ -12,7 +19,7 @@ export const userSlice = createSlice({
   reducers: {
     loadUser: (state, action: PayloadAction<UserState>) => {
       console.log("init user login", action.payload);
-      return action.payload;
+      return { ...action.payload };
     },
     pushFriend: (state, action: PayloadAction<string>) => {
       return {

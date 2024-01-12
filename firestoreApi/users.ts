@@ -1,6 +1,8 @@
 import { db } from "../firebaseConfig";
 import {
+  Firestore,
   QueryDocumentSnapshot,
+  Timestamp,
   arrayRemove,
   arrayUnion,
   collection,
@@ -13,16 +15,26 @@ import {
   where,
 } from "firebase/firestore";
 import { QuerySnapshot, DocumentData, Query } from "firebase/firestore";
-import { User, UserInitialization } from "../types/User";
+import { Stats, User, UserInitialization } from "../types/User";
 import { auth } from "../firebaseConfig";
 import {
   UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { userInfo } from "os";
 
 const usersRef = collection(db, "users");
+
+const serializeUserData = (data: User) => {
+  const serializedPuzzlesSeen: Stats[] = [];
+  data.puzzlesSeen.map((info: any) => {
+    serializedPuzzlesSeen.push({
+      ...info,
+      attemptedOn: info.attemptedOn.toDate().toDateString(),
+    });
+  });
+  return { ...data, puzzlesSeen: serializedPuzzlesSeen };
+};
 
 export const postApiLoginUser = async (
   email: string,
@@ -102,7 +114,7 @@ export const getApiUserByEmail = async (
     let userData: User | null = null;
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
-        userData = { ...doc.data(), id: doc.id } as User;
+        userData = serializeUserData({ ...doc.data(), id: doc.id } as User);
       });
     }
     return userData;
@@ -116,7 +128,7 @@ export const getApiUserById = async (id: string): Promise<User | null> => {
   try {
     const userSnap = await getDoc(doc(usersRef, id));
     if (userSnap.exists()) {
-      return userSnap.data() as User;
+      return serializeUserData({ ...userSnap.data(), id: userSnap.id } as User);
     }
     return null;
   } catch {
@@ -161,7 +173,7 @@ export const getApiUserFriends = async (userId: string): Promise<User[]> => {
     let users: User[] = [];
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
-        users.push({ ...doc.data(), id: doc.id } as User);
+        users.push(serializeUserData({ ...doc.data(), id: doc.id } as User));
       });
     }
     return users;
@@ -222,30 +234,6 @@ export const putApiUserFriendRequestById = async (
   }
 };
 
-export const putApiUserPuzzleSeenById = async (
-  userId: string,
-  puzzleId: string,
-  solved: boolean
-): Promise<void> => {
-  try {
-    const userDocRef = doc(usersRef, userId);
-    const userDocSnap = await getDoc(userDocRef);
-    if (userDocSnap.exists()) {
-      await updateDoc(userDocRef, {
-        puzzlesSeen: {
-          puzzleId: puzzleId,
-          solved: solved,
-        },
-      });
-    } else {
-      console.error("user does not exist");
-      return;
-    }
-  } catch {
-    (e: Error) => console.error("error updating user stats", e);
-  }
-};
-
 export const getApiUserByUsernameFragment = async (
   searchPhrase: string
 ): Promise<Array<User>> => {
@@ -261,7 +249,9 @@ export const getApiUserByUsernameFragment = async (
     let userDataArr: Array<User> = [];
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
-        userDataArr.push({ ...doc.data(), id: doc.id } as User);
+        userDataArr.push(
+          serializeUserData({ ...doc.data(), id: doc.id } as User)
+        );
       });
     }
     return userDataArr;
@@ -283,5 +273,30 @@ export const deleteApiUserFriendRequest = async (
     });
   } catch {
     console.log("error deleting friendId from user's requests");
+  }
+};
+
+export const putApiUserPuzzleAttemptById = async (
+  userId: string,
+  puzzleId: string,
+  solved: boolean
+) => {
+  try {
+    const userDocRef = doc(usersRef, userId);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+      await updateDoc(userDocRef, {
+        puzzlesSeen: arrayUnion({
+          puzzleId: puzzleId,
+          solved: solved,
+          attemptedOn: Timestamp.now(),
+        }),
+      });
+    } else {
+      console.error("user does not exist");
+      return;
+    }
+  } catch {
+    (e: Error) => console.error("error logging puzzle completion data", e);
   }
 };

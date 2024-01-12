@@ -12,12 +12,21 @@ import { shuffleArr } from "../utils/puzzleBoardUtils";
 import { Category } from "../types/PuzzleBoard";
 import { CORRECT_COLOR_ARRAY } from "../styles/constants";
 import CorrectPuzzleModal from "../components/CorrectPuzzleModal";
+import {
+  getApiUserById,
+  putApiUserPuzzleAttemptById,
+} from "../firestoreApi/users";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { loadUser } from "../redux/userSlice";
+import { Stats } from "../types/User";
 
 const PlayPuzzleScreen = (props: {
   navigation: NativeStackNavigationProp<PlayStackParamList, "PlayPuzzle">;
   route: PlayPuzzleRouteProp;
 }) => {
   const { puzzle } = props.route.params;
+  const user = useSelector((state: RootState) => state.user.user);
   const [shuffledTiles, setShuffledTiles] = useState<Array<string>>([]);
   const [pressedTiles, setPressedTiles] = useState<Array<string>>([]);
   const [correctCategories, setCorrectCategories] = useState<Array<Category>>(
@@ -28,12 +37,35 @@ const PlayPuzzleScreen = (props: {
     useState<Array<string>>(CORRECT_COLOR_ARRAY);
   const [correctModalVisible, setCorrectModalVisible] =
     useState<boolean>(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (numMistakes === 4 || correctCategories.length === 4) {
       setCorrectModalVisible(true);
+
+      const logCompletionData = async () => {
+        await putApiUserPuzzleAttemptById(
+          user.id,
+          puzzle.puzzleId,
+          numMistakes < 4
+        );
+        const refreshedUser = await getApiUserById(user.id);
+        if (refreshedUser) {
+          dispatch(loadUser({ user: refreshedUser }));
+        }
+      };
+
+      if (
+        user.puzzlesSeen.filter(
+          (info: Stats) => info.puzzleId == puzzle.puzzleId
+        ).length == 0
+      ) {
+        logCompletionData();
+      }
     }
   }, [numMistakes, correctCategories]);
+
+  console.log("user", user);
 
   useEffect(() => {
     let tileArr: Array<string> = [];
