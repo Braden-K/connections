@@ -25,16 +25,16 @@ import {
 
 const usersRef = collection(db, "users");
 
-const serializeUserData = (data: User) => {
-  const serializedPuzzlesSeen: Stats[] = [];
-  data.puzzlesSeen.map((info: any) => {
-    serializedPuzzlesSeen.push({
-      ...info,
-      attemptedOn: info.attemptedOn.toDate().toDateString(),
-    });
-  });
-  return { ...data, puzzlesSeen: serializedPuzzlesSeen };
-};
+// const serializeUserData = (data: User) => {
+//   const serializedPuzzlesSeen: Stats[] = [];
+//   data.puzzlesSeen.map((info: any) => {
+//     serializedPuzzlesSeen.push({
+//       ...info,
+//       attemptedOn: info.attemptedOn.toDate().toDateString(),
+//     });
+//   });
+//   return { ...data, puzzlesSeen: serializedPuzzlesSeen };
+// };
 
 export const postApiLoginUser = async (
   email: string,
@@ -114,7 +114,8 @@ export const getApiUserByEmail = async (
     let userData: User | null = null;
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
-        userData = serializeUserData({ ...doc.data(), id: doc.id } as User);
+        console.log("USERDATA", doc.data());
+        userData = { ...doc.data(), id: doc.id } as User;
       });
     }
     return userData;
@@ -128,7 +129,7 @@ export const getApiUserById = async (id: string): Promise<User | null> => {
   try {
     const userSnap = await getDoc(doc(usersRef, id));
     if (userSnap.exists()) {
-      return serializeUserData({ ...userSnap.data(), id: userSnap.id } as User);
+      return { ...userSnap.data(), id: userSnap.id } as User;
     }
     return null;
   } catch {
@@ -173,12 +174,17 @@ export const getApiUserFriends = async (userId: string): Promise<User[]> => {
     let users: User[] = [];
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
-        users.push(serializeUserData({ ...doc.data(), id: doc.id } as User));
+        console.log("DOC", doc);
+        users.push({ ...doc.data(), id: doc.id } as User);
       });
+    } else {
+      console.log("SNAPSHOT EMPTY");
     }
     return users;
   } catch {
-    console.error("error fetching user's friends list");
+    (e: Error) => {
+      console.error("error fetching user's friends list", e);
+    };
   }
   return [];
 };
@@ -249,9 +255,7 @@ export const getApiUserByUsernameFragment = async (
     let userDataArr: Array<User> = [];
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
-        userDataArr.push(
-          serializeUserData({ ...doc.data(), id: doc.id } as User)
-        );
+        userDataArr.push({ ...doc.data(), id: doc.id } as User);
       });
     }
     return userDataArr;
@@ -289,7 +293,7 @@ export const putApiUserPuzzleAttemptById = async (
         puzzlesSeen: arrayUnion({
           puzzleId: puzzleId,
           solved: solved,
-          attemptedOn: Timestamp.now(),
+          attemptedOn: Date.now(),
         }),
       });
     } else {

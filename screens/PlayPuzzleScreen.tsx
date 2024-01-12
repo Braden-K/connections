@@ -56,6 +56,7 @@ const PlayPuzzleScreen = (props: {
       };
 
       if (
+        !user.puzzlesSeen ||
         user.puzzlesSeen.filter(
           (info: Stats) => info.puzzleId == puzzle.puzzleId
         ).length == 0

@@ -29,6 +29,9 @@ const AddFriendScreen = () => {
       const searchResults: User[] = await getApiUserByUsernameFragment(
         searchPhrase
       );
+      searchResults.filter(
+        (res: User) => res.username !== currentUser.username
+      );
       setUsers(searchResults);
     }
   };

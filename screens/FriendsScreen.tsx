@@ -34,7 +34,7 @@ const FriendsScreen = (props: {
     setIsLoading(true);
     getUserFriends();
     setIsLoading(false);
-  }, []);
+  }, [currentUser]);
 
   const handlePressRequests = async () => {
     console.log(currentUser);

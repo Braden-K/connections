@@ -29,6 +29,7 @@ const RequestModal = (props: {
       props.requestingUsers.filter((user) => user.id != friendId)
     );
     const refreshedUser = await getApiUserById(currentUser.id);
+    console.log("REF USER", refreshedUser);
     if (refreshedUser) {
       dispatch(loadUser({ user: refreshedUser }));
     }
