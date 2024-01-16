@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
+import { COLOR_ONE, COLOR_THREE, COLOR_TWO } from "./constants";
 
 const { width } = Dimensions.get("window");
 const SQUARE_SIZE = width / 4;
@@ -44,10 +45,24 @@ export const playHomeScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 10,
+    backgroundColor: COLOR_ONE,
+    alignItems: "center",
   },
-  largeText: {
+  levelsView: {
+    margin: 10,
+  },
+  titleText: {
     fontSize: 40,
+    fontFamily: "poppins",
+    color: COLOR_TWO,
+    marginBottom: 10,
+    width: "100%",
+  },
+  subText: {
+    fontSize: 25,
     fontFamily: "code",
+    color: COLOR_THREE,
+    width: "100%",
   },
   pillButton: {
     borderWidth: 1,
@@ -81,6 +96,12 @@ export const playHomeScreenStyles = StyleSheet.create({
   headerView: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  publicButtonView: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 20,
   },
 });
 

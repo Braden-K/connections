@@ -8,8 +8,11 @@ import { useDispatch } from "react-redux";
 import { loadUser } from "../redux/userSlice";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation";
-import { getApiPuzzlesByUserId } from "../firestoreApi/puzzles";
-import { pushAllUserPuzzles } from "../redux/puzzleSlice";
+import {
+  getApiLevelPuzzles,
+  getApiPuzzlesByUserId,
+} from "../firestoreApi/puzzles";
+import { pushAllUserPuzzles, pushLevels } from "../redux/puzzleSlice";
 import LoadingSpinner from "./LoadingSpinner";
 
 const LoginInput = (props: {
@@ -29,7 +32,9 @@ const LoginInput = (props: {
       if (user !== null) {
         dispatch(loadUser({ user: user }));
         const userPuzzles = await getApiPuzzlesByUserId(user.id);
+        const levels = await getApiLevelPuzzles();
         dispatch(pushAllUserPuzzles(userPuzzles));
+        dispatch(pushLevels(levels));
         props.navigation.navigate("Home");
         setIsLoading(false);
       }

@@ -21,6 +21,7 @@ import {
 import { Permission } from "../types/PuzzleBoard";
 
 const puzzlesCollection = collection(db, "puzzles");
+const levelsCollection = collection(db, "levels");
 
 const puzzleBoardToCollectionFormat = (
   pb: PuzzleBoardPostQuery
@@ -32,6 +33,7 @@ const puzzleBoardToCollectionFormat = (
   }
 
   return {
+    label: pb.label,
     categories,
     tiles1: pb.puzzle[0].tiles,
     tiles2: pb.puzzle[1].tiles,
@@ -63,6 +65,7 @@ const collectionFormatToPuzzleBoard = (
   };
 
   return {
+    label: cf.label,
     puzzleId,
     puzzle: [c1, c2, c3, c4],
     permission:
@@ -111,9 +114,17 @@ export const getApiPuzzlesByUserId = async (
     let puzzleBoards: Array<PuzzleBoard> = [];
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc: DocumentData) => {
-        const { categories, tiles1, tiles2, tiles3, tiles4, permission } =
-          doc.data();
+        const {
+          label,
+          categories,
+          tiles1,
+          tiles2,
+          tiles3,
+          tiles4,
+          permission,
+        } = doc.data();
         const puzzleBoard = collectionFormatToPuzzleBoard(doc.id, {
+          label,
           categories,
           tiles1,
           tiles2,
@@ -167,10 +178,18 @@ const fetchPublicPuzzleFromQuery = async (
     let puzzleBoard: PuzzleBoard | null = null;
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-        const { categories, tiles1, tiles2, tiles3, tiles4, permission } =
-          doc.data();
+        const {
+          label,
+          categories,
+          tiles1,
+          tiles2,
+          tiles3,
+          tiles4,
+          permission,
+        } = doc.data();
         if (doc.data().userId !== userId) {
           puzzleBoard = collectionFormatToPuzzleBoard(doc.id, {
+            label,
             categories,
             tiles1,
             tiles2,
@@ -194,7 +213,10 @@ const fetchPublicPuzzleFromQuery = async (
 export const getApiRandomPublicPuzzle = async (
   userId: string
 ): Promise<PuzzleBoard | null> => {
+  console.log("in api random");
+
   if (!(await publicPuzzlesExist(userId))) {
+    console.log("no publics exist");
     return null;
   }
 
@@ -234,5 +256,44 @@ export const getApiRandomPublicPuzzle = async (
       };
     }
   }
+  console.log("random puzzle in api", randomPuzzle);
   return randomPuzzle;
+};
+
+export const getApiLevelPuzzles = async (): Promise<Array<PuzzleBoard>> => {
+  try {
+    const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
+      await getDocs(levelsCollection);
+    let puzzleBoards: Array<PuzzleBoard> = [];
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc: DocumentData) => {
+        const {
+          label,
+          categories,
+          tiles1,
+          tiles2,
+          tiles3,
+          tiles4,
+          permission,
+        } = doc.data();
+        const puzzleBoard = collectionFormatToPuzzleBoard(doc.id, {
+          label,
+          categories,
+          tiles1,
+          tiles2,
+          tiles3,
+          tiles4,
+          permission,
+        });
+        puzzleBoards.push(puzzleBoard);
+      });
+      return puzzleBoards;
+    }
+    return [];
+  } catch {
+    (e: Error) => {
+      console.log("error fetching puzzle levels", e.message);
+    };
+  }
+  return [];
 };

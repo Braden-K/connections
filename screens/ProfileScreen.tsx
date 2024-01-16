@@ -5,17 +5,19 @@ import { profileStyles } from "../styles/profileTabStyles";
 
 const ProfileScreen = () => {
   const user = useSelector((state: RootState) => state.user.user);
+  const numPuzzlesSeen = user.puzzlesSeen.length;
+  const numPuzzlesSolved = user.puzzlesSeen.filter(
+    (info) => info.solved
+  ).length;
+  const winRate = (numPuzzlesSolved / numPuzzlesSeen) * 100;
 
   return (
     <SafeAreaView style={profileStyles.container}>
       <Text style={profileStyles.header}>{user.username}</Text>
       <View>
-        <Text>Puzzles Seen: {user.puzzlesSeen.length}</Text>
-        <Text>
-          Puzzles Solved:{" "}
-          {user.puzzlesSeen.filter((info) => info.solved).length}
-        </Text>
-        <Text>Percentage Solved: </Text>
+        <Text>Puzzles Seen {numPuzzlesSeen}</Text>
+        <Text>Puzzles Solved {numPuzzlesSolved}</Text>
+        <Text>Win Rate {winRate}%</Text>
       </View>
     </SafeAreaView>
   );

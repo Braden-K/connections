@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { COLOR_ONE } from "./constants";
 
 export const globalPageStyles = StyleSheet.create({
   container: {
@@ -6,6 +7,7 @@ export const globalPageStyles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     marginTop: 20,
+    backgroundColor: COLOR_ONE,
   },
 });
 

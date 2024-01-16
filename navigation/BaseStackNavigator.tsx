@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation";
 import BaseTabNavigator from "./BaseTabNavigator";
+import { COLOR_ONE } from "../styles/constants";
 
 const BaseStackNavigator = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -14,6 +15,9 @@ const BaseStackNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
+          contentStyle: {
+            backgroundColor: COLOR_ONE,
+          },
         }}
       >
         <Stack.Screen

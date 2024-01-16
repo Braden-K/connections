@@ -6,4 +6,5 @@ export type UserState = { user: User };
 export type PuzzleState = {
   userPuzzles: Array<PuzzleBoard>;
   puzzles: Array<PuzzleBoard>;
+  levels: Array<PuzzleBoard>;
 };

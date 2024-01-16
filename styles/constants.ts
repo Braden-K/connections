@@ -1,3 +1,8 @@
+export const COLOR_ONE = "#313145";
+export const COLOR_TWO = "#f24a4a";
+export const COLOR_THREE = "#ffcc66";
+export const COLOR_FOUR = "#919191";
+
 export const TILE_COLOR = "#D3D3D3";
 export const PRESSED_TILE_COLOR = "#808080";
 export const CORRECT_COLOR_BLUE = "#0099cc";

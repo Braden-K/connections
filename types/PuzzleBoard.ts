@@ -5,16 +5,19 @@ export type Category = {
 
 export type PuzzleBoard = {
   puzzleId: string;
+  label: string;
   puzzle: [Category, Category, Category, Category];
   permission: PermissionType;
 };
 
 export type PuzzleBoardPostQuery = {
+  label: string;
   puzzle: [Category, Category, Category, Category];
   permission: PermissionType;
 };
 
 export type PuzzleCollectionFormat = {
+  label: string;
   categories: Array<string>;
   tiles1: Array<string>;
   tiles2: Array<string>;
