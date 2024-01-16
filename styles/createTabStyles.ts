@@ -1,4 +1,10 @@
 import { Dimensions, StyleSheet } from "react-native";
+import {
+  COLOR_ONE,
+  COLOR_THREE,
+  COLOR_TWO,
+  TILE_TEXT_COLOR,
+} from "./constants";
 
 const width = Dimensions.get("window").width;
 
@@ -19,6 +25,7 @@ export const myPuzzlesScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 10,
+    backgroundColor: COLOR_ONE,
   },
   puzzleRow: {
     height: 50,
@@ -34,6 +41,8 @@ export const createPuzzleScreenStyles = StyleSheet.create({
     paddingLeft: 10,
     paddingBottom: 1,
     paddingTop: 5,
+    borderColor: COLOR_TWO,
+    color: TILE_TEXT_COLOR,
   },
   tileInput: {
     height: 30,
@@ -42,6 +51,18 @@ export const createPuzzleScreenStyles = StyleSheet.create({
     paddingLeft: 10,
     paddingBottom: 1,
     paddingTop: 1,
+    borderColor: COLOR_TWO,
+    color: TILE_TEXT_COLOR,
+  },
+  categoryInputText: {
+    fontFamily: "code",
+    fontSize: 20,
+    color: COLOR_TWO,
+  },
+  tileInputText: {
+    fontFamily: "code",
+    fontSize: 15,
+    color: COLOR_THREE,
   },
   container: {
     flex: 1,

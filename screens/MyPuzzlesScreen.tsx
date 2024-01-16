@@ -8,6 +8,8 @@ import { PuzzleBoard } from "../types/PuzzleBoard";
 import { playHomeScreenStyles } from "../styles/playTabStyles";
 import PillButton from "../components/PillButton";
 import RectangularButton from "../components/RectangularButton";
+import VerticalPuzzleScroll from "../components/VerticalPuzzleScroll";
+import { COLOR_THREE } from "../styles/constants";
 
 const MyPuzzlesScreen = (props: {
   navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
@@ -20,6 +22,10 @@ const MyPuzzlesScreen = (props: {
     props.navigation.navigate("CreatePuzzle");
   };
 
+  const onPressPuzzle = (puzzle: PuzzleBoard) => {
+    props.navigation.navigate("PlayPuzzle", { puzzle: puzzle });
+  };
+
   return (
     <SafeAreaView style={myPuzzlesScreenStyles.container}>
       <View
@@ -29,10 +35,10 @@ const MyPuzzlesScreen = (props: {
           margin: 10,
         }}
       >
-        <Text style={playHomeScreenStyles.largeText}>My Puzzles</Text>
+        <Text style={playHomeScreenStyles.titleText}>My Puzzles</Text>
         <PillButton
           text={"New"}
-          color={"black"}
+          color={COLOR_THREE}
           width={70}
           onPress={onPlusPress}
         />
@@ -43,23 +49,7 @@ const MyPuzzlesScreen = (props: {
             You have no puzzles yet!
           </Text>
         ) : (
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <FlatList
-              data={userPuzzles}
-              renderItem={({ item }) => (
-                <View style={{ marginBottom: 10 }}>
-                  <RectangularButton
-                    text={(userPuzzles.indexOf(item) + 1).toString()}
-                    color={"black"}
-                    width={300}
-                    onPress={() => {
-                      props.navigation.navigate("PlayPuzzle", { puzzle: item });
-                    }}
-                  />
-                </View>
-              )}
-            />
-          </View>
+          <VerticalPuzzleScroll puzzles={userPuzzles} onPress={onPressPuzzle} />
         )}
       </View>
     </SafeAreaView>

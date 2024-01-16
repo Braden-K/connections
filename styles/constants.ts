@@ -37,4 +37,5 @@ export const CREATE_FORM_LABELS = [
   "Option 2:",
   "Option 3:",
   "Option 4:",
+  "Name your puzzle:",
 ];

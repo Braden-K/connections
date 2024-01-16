@@ -22,6 +22,7 @@ import { Fragment, useEffect, useState } from "react";
 import { PuzzleBoard } from "../types/PuzzleBoard";
 import { puzzleCard } from "../styles/puzzleCardStyles";
 import { COLOR_TWO } from "../styles/constants";
+import VerticalPuzzleScroll from "../components/VerticalPuzzleScroll";
 
 const { width } = Dimensions.get("window");
 
@@ -30,16 +31,6 @@ const PlayScreen = (props: {
 }) => {
   const levels = useSelector((state: RootState) => state.puzzle.levels);
   const user = useSelector((state: RootState) => state.user.user);
-
-  const groupLevels = (puzzles: PuzzleBoard[], perRow: number) => {
-    const puzzlesCopy = [...puzzles];
-    puzzlesCopy.sort((a, b) => Number(a.label) - Number(b.label));
-    const groups: PuzzleBoard[][] = [];
-    for (let i = 0; i < puzzles.length; i += perRow) {
-      groups.push(puzzlesCopy.slice(i, i + perRow));
-    }
-    return groups;
-  };
 
   const onPressPlayRandom = async () => {
     const random = await getApiRandomPublicPuzzle(user.id);
@@ -82,41 +73,7 @@ const PlayScreen = (props: {
       </TouchableWithoutFeedback>
       <Text style={playHomeScreenStyles.subText}>Levels</Text>
       <View style={playHomeScreenStyles.levelsView}>
-        <ScrollView
-          decelerationRate={0}
-          snapToAlignment="center"
-          showsVerticalScrollIndicator={false}
-        >
-          {groupLevels(levels, 2).map((level, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-evenly",
-                  width: "100%",
-                }}
-              >
-                <PuzzleCard
-                  width={125}
-                  height={175}
-                  title={level[0].label}
-                  puzzle={level[0]}
-                  onPress={() => onPressLevel(level[0])}
-                />
-                {level[1] && (
-                  <PuzzleCard
-                    width={125}
-                    height={175}
-                    title={level[1].label}
-                    puzzle={level[1]}
-                    onPress={() => onPressLevel(level[1])}
-                  />
-                )}
-              </View>
-            );
-          })}
-        </ScrollView>
+        <VerticalPuzzleScroll puzzles={levels} onPress={onPressLevel} />
       </View>
     </SafeAreaView>
   );

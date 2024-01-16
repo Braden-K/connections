@@ -12,7 +12,7 @@ import { CreateStackParamList } from "../types/navigation";
 import RectangularButton from "./RectangularButton";
 import PuzzlePermissionsModal from "./PuzzlePermissionModal";
 import { Permission } from "../types/PuzzleBoard";
-import { CREATE_FORM_LABELS } from "../styles/constants";
+import { COLOR_TWO, CREATE_FORM_LABELS } from "../styles/constants";
 
 export const CreatePuzzleForm = (props: {
   navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
@@ -26,7 +26,7 @@ export const CreatePuzzleForm = (props: {
     Permission.PUBLIC
   );
   const [puzzleFormData, setPuzzleFormData] = useState<string[]>(
-    Array.from("".repeat(20))
+    Array.from("".repeat(21))
   );
   const [invalidInput, setInvalidInput] = useState<boolean>(false);
 
@@ -41,7 +41,7 @@ export const CreatePuzzleForm = (props: {
       })
     );
 
-    if (entrySet.size < 20 || entrySet.has("")) {
+    if (entrySet.size < 21 || entrySet.has("")) {
       return true;
     }
     return false;
@@ -76,6 +76,7 @@ export const CreatePuzzleForm = (props: {
     };
 
     const puzzleBoard: PuzzleBoardPostQuery = {
+      label: pfd[20],
       puzzle: [c1, c2, c3, c4],
       permission: permissionType,
     };
@@ -96,7 +97,7 @@ export const CreatePuzzleForm = (props: {
     setPuzzleFormData([
       ...puzzleFormData.slice(0, index),
       data,
-      ...puzzleFormData.slice(index + 1, 20),
+      ...puzzleFormData.slice(index + 1, 21),
     ]);
   };
 
@@ -114,9 +115,21 @@ export const CreatePuzzleForm = (props: {
       {CREATE_FORM_LABELS.map((label, index) => {
         return (
           <Fragment key={index}>
-            <Text>{label}</Text>
+            <Text
+              style={
+                index % 5 == 0
+                  ? createPuzzleScreenStyles.categoryInputText
+                  : createPuzzleScreenStyles.tileInputText
+              }
+            >
+              {label}
+            </Text>
             <TextInput
-              style={createPuzzleScreenStyles.categoryInput}
+              style={
+                index % 5 == 0
+                  ? createPuzzleScreenStyles.categoryInput
+                  : createPuzzleScreenStyles.tileInput
+              }
               onChangeText={(text: string) => setFormDataAtIndex(index, text)}
               value={puzzleFormData[index]}
             />
@@ -127,7 +140,7 @@ export const CreatePuzzleForm = (props: {
         <RectangularButton
           onPress={handleInitialSubmit}
           text={"Create Puzzle"}
-          color={"black"}
+          color={COLOR_TWO}
           width={200}
         />
       </View>

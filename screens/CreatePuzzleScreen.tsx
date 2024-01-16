@@ -18,8 +18,8 @@ const CreatePuzzleScreen = (props: {
   ) : (
     <SafeAreaView>
       <KeyboardAwareScrollView>
-        <View style={{ margin: 10 }}>
-          <Text style={playHomeScreenStyles.largeText}>Create</Text>
+        <View style={{ marginLeft: 10 }}>
+          <Text style={playHomeScreenStyles.titleText}>Create</Text>
         </View>
         <CreatePuzzleForm
           navigation={props.navigation}

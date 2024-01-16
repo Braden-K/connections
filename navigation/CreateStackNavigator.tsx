@@ -3,6 +3,7 @@ import { CreateStackParamList } from "../types/navigation";
 import MyPuzzlesScreen from "../screens/MyPuzzlesScreen";
 import CreatePuzzleScreen from "../screens/CreatePuzzleScreen";
 import PlayPuzzleScreen from "../screens/PlayPuzzleScreen";
+import { COLOR_ONE } from "../styles/constants";
 
 const CreateStackNavigator = () => {
   const Stack = createNativeStackNavigator<CreateStackParamList>();
@@ -11,6 +12,9 @@ const CreateStackNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
+        contentStyle: {
+          backgroundColor: COLOR_ONE,
+        },
       }}
       initialRouteName="MyPuzzles"
     >
