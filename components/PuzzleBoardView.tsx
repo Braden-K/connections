@@ -11,6 +11,9 @@ const PuzzleBoardView = (props: {
   correctColorOrder: Array<string>;
   setPressedTiles: (tiles: Array<string>) => void;
 }) => {
+  console.log("rendering puzzle board view");
+  console.log(props.puzzle);
+
   return (
     <View>
       {props.correctCategories.map((category, index) => (
@@ -23,7 +26,7 @@ const PuzzleBoardView = (props: {
 
       {Array(4 - props.correctCategories.length)
         .fill(0)
-        .map((val, index) => (
+        .map((_, index) => (
           <PuzzleBoardRow
             tiles={props.shuffledTiles.slice(index * 4, index * 4 + 4)}
             key={index}

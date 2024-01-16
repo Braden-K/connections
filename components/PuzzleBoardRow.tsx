@@ -7,11 +7,12 @@ const PuzzleBoardRow = (props: {
   pressedTiles: Array<string>;
   setPressedTiles: (tiles: Array<string>) => void;
 }) => {
+  console.log("tiles", props.tiles);
   return (
     <View style={playPuzzleScreenStyles.puzzleBoardRow}>
       {Array(4)
         .fill(0)
-        .map((val, index) => (
+        .map((_, index) => (
           <PuzzleTile
             tile={props.tiles[index]}
             key={index}

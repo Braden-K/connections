@@ -34,6 +34,13 @@ export const playPuzzleScreenStyles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
+    color: COLOR_THREE,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.5,
   },
   buttonView: {
     flexDirection: "row",
@@ -56,7 +63,6 @@ export const playHomeScreenStyles = StyleSheet.create({
     fontFamily: "poppins",
     color: COLOR_TWO,
     marginBottom: 10,
-    width: "100%",
   },
   subText: {
     fontSize: 25,
@@ -65,11 +71,12 @@ export const playHomeScreenStyles = StyleSheet.create({
     width: "100%",
   },
   pillButton: {
-    borderWidth: 1,
+    borderWidth: 3,
     alignItems: "center",
     justifyContent: "center",
     height: 50,
     borderRadius: 25,
+    marginRight: 10,
   },
   pillButtonText: {
     fontFamily: "code",
@@ -96,6 +103,7 @@ export const playHomeScreenStyles = StyleSheet.create({
   headerView: {
     flexDirection: "row",
     justifyContent: "space-between",
+    width: "100%",
   },
   publicButtonView: {
     justifyContent: "center",

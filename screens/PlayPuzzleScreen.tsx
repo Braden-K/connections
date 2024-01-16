@@ -10,7 +10,12 @@ import PillButton from "../components/PillButton";
 import { useEffect, useState } from "react";
 import { shuffleArr } from "../utils/puzzleBoardUtils";
 import { Category } from "../types/PuzzleBoard";
-import { CORRECT_COLOR_ARRAY } from "../styles/constants";
+import {
+  COLOR_ONE,
+  COLOR_THREE,
+  COLOR_TWO,
+  CORRECT_COLOR_ARRAY,
+} from "../styles/constants";
 import CorrectPuzzleModal from "../components/CorrectPuzzleModal";
 import {
   getApiUserById,
@@ -37,6 +42,7 @@ const PlayPuzzleScreen = (props: {
     useState<Array<string>>(CORRECT_COLOR_ARRAY);
   const [correctModalVisible, setCorrectModalVisible] =
     useState<boolean>(false);
+  const [alreadyGuessed, setAlreadyGuessed] = useState<string[][]>([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -84,6 +90,13 @@ const PlayPuzzleScreen = (props: {
   }, []);
 
   const onPressSubmit = () => {
+    for (const alreadyGuessedGroup of alreadyGuessed) {
+      if (pressedTiles.every((tile) => alreadyGuessedGroup.includes(tile))) {
+        alert("already guessed");
+        return;
+      }
+    }
+
     for (const category of puzzle.puzzle) {
       if (!correctCategories.includes(category)) {
         if (
@@ -96,6 +109,7 @@ const PlayPuzzleScreen = (props: {
         }
       }
     }
+    setAlreadyGuessed(alreadyGuessed.concat([[...pressedTiles]]));
     setNumMistakes(numMistakes + 1);
   };
 
@@ -127,15 +141,18 @@ const PlayPuzzleScreen = (props: {
           setVisible={setCorrectModalVisible}
           correctPuzzle={numMistakes < 4}
         />
-        <Text style={playHomeScreenStyles.largeText}>Puzzle</Text>
+        <Text style={playHomeScreenStyles.titleText}>
+          {"  " + puzzle.label}
+        </Text>
         <PillButton
           text={generateXs(numMistakes)}
-          color={"black"}
+          color={COLOR_TWO}
           width={150}
           onPress={() => {}}
+          disabled={true}
         />
       </View>
-      <View style={{ marginTop: 10, marginBottom: 10 }}>
+      <View style={{ marginTop: 10, marginBottom: 10, width: "100%" }}>
         <PuzzleBoardView
           puzzle={puzzle}
           correctCategories={correctCategories}
@@ -148,13 +165,14 @@ const PlayPuzzleScreen = (props: {
       <View style={playPuzzleScreenStyles.buttonView}>
         <PillButton
           text={"Submit"}
-          color={"black"}
+          color={pressedTiles.length === 4 ? COLOR_THREE : COLOR_TWO}
           width={100}
           onPress={onPressSubmit}
+          disabled={pressedTiles.length !== 4}
         />
         <PillButton
           text={"Deselect"}
-          color={"black"}
+          color={COLOR_TWO}
           width={125}
           onPress={onPressDeselect}
         />

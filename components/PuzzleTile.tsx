@@ -1,7 +1,11 @@
 import { Text, TouchableOpacity } from "react-native";
 import { playPuzzleScreenStyles } from "../styles/playTabStyles";
 import { useEffect, useState } from "react";
-import { TILE_COLOR, PRESSED_TILE_COLOR } from "../styles/constants";
+import {
+  TILE_COLOR,
+  PRESSED_TILE_COLOR,
+  TILE_TEXT_COLOR,
+} from "../styles/constants";
 
 const PuzzleTile = (props: {
   tile: string;
@@ -9,6 +13,8 @@ const PuzzleTile = (props: {
   setPressedTiles: (tiles: Array<string>) => void;
 }) => {
   const [color, setColor] = useState<string>(TILE_COLOR);
+
+  console.log("tile", props.tile);
 
   useEffect(() => {
     if (props.pressedTiles.includes(props.tile)) {
@@ -37,7 +43,9 @@ const PuzzleTile = (props: {
       style={{ ...playPuzzleScreenStyles.puzzleTile, backgroundColor: color }}
       onPress={onPress}
     >
-      <Text>{props.tile}</Text>
+      <Text style={{ color: TILE_TEXT_COLOR, fontFamily: "code" }}>
+        {props.tile}
+      </Text>
     </TouchableOpacity>
   );
 };
