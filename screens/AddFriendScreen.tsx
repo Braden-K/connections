@@ -28,10 +28,10 @@ const AddFriendScreen = () => {
     if (searchPhrase == "") {
       setUsers([]);
     } else {
-      const searchResults: User[] = await getApiUserByUsernameFragment(
+      let searchResults: User[] = await getApiUserByUsernameFragment(
         searchPhrase
       );
-      searchResults.filter(
+      searchResults = searchResults.filter(
         (res: User) => res.username !== currentUser.username
       );
       setUsers(searchResults);

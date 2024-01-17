@@ -29,12 +29,12 @@ const FriendsScreen = (props: {
 
   useEffect(() => {
     const getUserFriends = async () => {
+      setIsLoading(true);
       const friends: User[] = await getApiUserFriends(currentUser.id);
+      setIsLoading(false);
       setFriends(friends);
     };
-    setIsLoading(true);
     getUserFriends();
-    setIsLoading(false);
   }, [currentUser]);
 
   const handlePressRequests = async () => {
@@ -44,9 +44,7 @@ const FriendsScreen = (props: {
     setRequestModalVisible(true);
   };
 
-  return isLoading ? (
-    <LoadingSpinner />
-  ) : (
+  return (
     <SafeAreaView style={friendsScreenStyles.container}>
       <RequestModal
         visible={reuqestModalVisible}
@@ -79,20 +77,24 @@ const FriendsScreen = (props: {
             ? "Press to see friends' puzzles"
             : "Click add friend to search usernames"}
         </Text>
-        <FlatList
-          data={friends}
-          renderItem={({ item }) => (
-            <FriendListing
-              username={item.username}
-              onPress={() => {
-                props.navigation.navigate("FriendsPuzzles", {
-                  userId: item.id,
-                });
-              }}
-            />
-          )}
-          keyExtractor={(item) => item.id}
-        />
+        {!isLoading ? (
+          <FlatList
+            data={friends}
+            renderItem={({ item }) => (
+              <FriendListing
+                username={item.username}
+                onPress={() => {
+                  props.navigation.navigate("FriendsPuzzles", {
+                    userId: item.id,
+                  });
+                }}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        ) : (
+          <LoadingSpinner />
+        )}
       </View>
     </SafeAreaView>
   );
