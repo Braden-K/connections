@@ -117,13 +117,16 @@ export const playModalStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginTop: 60,
+    backgroundColor: COLOR_ONE,
   },
   winText: {
     fontSize: 30,
     fontFamily: "code",
+    color: COLOR_TWO,
+    marginTop: 90,
   },
   miniModalBoardContainer: {
+    marginTop: 40,
     margin: 10,
     marginBottom: 30,
     width: width - 50,
@@ -143,10 +146,9 @@ export const playModalStyles = StyleSheet.create({
     fontFamily: "code",
   },
   buttonView: {
-    flexDirection: "row",
-    marginTop: 5,
+    marginTop: 20,
     marginBottom: 20,
-    justifyContent: "space-between",
+    alignItems: "center",
     width: width - 50,
   },
 });

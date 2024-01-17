@@ -8,8 +8,8 @@ export const PRESSED_TILE_COLOR = COLOR_TWO;
 export const TILE_TEXT_COLOR = "#dbdbdb";
 export const CORRECT_COLOR_BLUE = "#0099cc";
 export const CORRECT_COLOR_GREEN = "#00cc99";
-export const CORRECT_COLOR_SALMON = "#ff6666";
-export const CORRECT_COLOR_YELLOW = "#ffcc66";
+export const CORRECT_COLOR_SALMON = "#eb8c34";
+export const CORRECT_COLOR_YELLOW = "#d934eb";
 export const CORRECT_COLOR_ARRAY = [
   CORRECT_COLOR_BLUE,
   CORRECT_COLOR_GREEN,

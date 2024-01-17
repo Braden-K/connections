@@ -5,11 +5,12 @@ import { profileStyles } from "../styles/profileTabStyles";
 
 const ProfileScreen = () => {
   const user = useSelector((state: RootState) => state.user.user);
-  const numPuzzlesSeen = user.puzzlesSeen.length;
-  const numPuzzlesSolved = user.puzzlesSeen.filter(
-    (info) => info.solved
-  ).length;
-  const winRate = (numPuzzlesSolved / numPuzzlesSeen) * 100;
+  const numPuzzlesSeen = user.puzzlesSeen ? user.puzzlesSeen.length : 0;
+  const numPuzzlesSolved = user.puzzlesSeen
+    ? user.puzzlesSeen.filter((info) => info.solved).length
+    : 0;
+  const winRate =
+    numPuzzlesSeen > 0 ? (numPuzzlesSolved / numPuzzlesSeen) * 100 : 0;
 
   return (
     <SafeAreaView style={profileStyles.container}>

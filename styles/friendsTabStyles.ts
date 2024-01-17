@@ -84,7 +84,7 @@ export const requestModalStyles = StyleSheet.create({
     paddingTop: 150,
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: COLOR_ONE,
     padding: 20,
     borderRadius: 10,
     alignItems: "center",

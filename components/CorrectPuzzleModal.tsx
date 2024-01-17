@@ -8,6 +8,7 @@ import RectangularButton from "./RectangularButton";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { PlayStackParamList } from "../types/navigation";
+import { COLOR_THREE } from "../styles/constants";
 
 const CorrectPuzzleModal = (props: {
   visible: boolean;
@@ -29,36 +30,17 @@ const CorrectPuzzleModal = (props: {
           categories={props.categories}
           colorOrder={props.colorOrder}
         />
-        <Text style={{ fontFamily: "code", fontSize: 25 }}>Play another:</Text>
         <View style={playModalStyles.buttonView}>
           <PillButton
-            text={"Latest"}
-            color={"back"}
-            width={100}
-            onPress={() => {}}
-          />
-          <PillButton
-            text={"Random"}
-            color={"back"}
-            width={100}
-            onPress={() => {}}
-          />
-          <PillButton
-            text={"Level"}
-            color={"back"}
-            width={100}
-            onPress={() => {}}
+            text={"Home"}
+            color={COLOR_THREE}
+            width={200}
+            onPress={() => {
+              props.setVisible(false);
+              props.navigation.navigate("PlayHome");
+            }}
           />
         </View>
-        <RectangularButton
-          text={"Go Home"}
-          color={"black"}
-          width={100}
-          onPress={() => {
-            props.setVisible(false);
-            props.navigation.navigate("PlayHome");
-          }}
-        />
       </SafeAreaView>
     </Modal>
   );

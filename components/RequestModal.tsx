@@ -12,6 +12,7 @@ import {
 } from "../firestoreApi/users";
 import { width } from "../styles/friendsTabStyles";
 import PillButton from "./PillButton";
+import { COLOR_THREE, COLOR_TWO } from "../styles/constants";
 
 const RequestModal = (props: {
   visible: boolean;
@@ -46,10 +47,20 @@ const RequestModal = (props: {
           <View style={requestModalStyles.modalHeader}>
             {props.requestingUsers.length >= 1 && (
               <TouchableOpacity onPress={props.close}>
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>X</Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    color: COLOR_THREE,
+                  }}
+                >
+                  X
+                </Text>
               </TouchableOpacity>
             )}
-            <Text style={{ fontFamily: "code", fontSize: 20 }}>
+            <Text
+              style={{ fontFamily: "code", fontSize: 20, color: COLOR_THREE }}
+            >
               {props.requestingUsers.length >= 1 ? "Requests" : ""}
             </Text>
             <Text></Text>
@@ -76,14 +87,15 @@ const RequestModal = (props: {
                     fontSize: 25,
                     fontFamily: "code",
                     marginTop: 80,
-                    marginBottom: 20,
+                    marginBottom: 40,
+                    color: COLOR_TWO,
                   }}
                 >
                   No Pending Requests!
                 </Text>
                 <PillButton
                   text={"close"}
-                  color={"black"}
+                  color={COLOR_THREE}
                   width={100}
                   onPress={props.close}
                 />
