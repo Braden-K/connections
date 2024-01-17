@@ -5,6 +5,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 import { playHomeScreenStyles } from "../styles/playTabStyles";
 import PillButton from "../components/PillButton";
@@ -21,8 +22,9 @@ import HorizontalCarousel from "../components/HorizontalCarousel";
 import { Fragment, useEffect, useState } from "react";
 import { PuzzleBoard } from "../types/PuzzleBoard";
 import { puzzleCard } from "../styles/puzzleCardStyles";
-import { COLOR_TWO } from "../styles/constants";
+import { COLOR_THREE, COLOR_TWO } from "../styles/constants";
 import VerticalPuzzleScroll from "../components/VerticalPuzzleScroll";
+import Icon from "react-native-vector-icons/AntDesign";
 
 const { width } = Dimensions.get("window");
 
@@ -33,9 +35,12 @@ const PlayScreen = (props: {
   const user = useSelector((state: RootState) => state.user.user);
 
   const onPressPlayRandom = async () => {
+    console.log("In random");
     const random = await getApiRandomPublicPuzzle(user.id);
     if (random) {
       props.navigation.navigate("PlayPuzzle", { puzzle: random });
+    } else {
+      alert("No public puzzles available");
     }
   };
 
@@ -47,7 +52,7 @@ const PlayScreen = (props: {
     <SafeAreaView style={playHomeScreenStyles.container}>
       <Text style={playHomeScreenStyles.titleText}>Play</Text>
       <Text style={playHomeScreenStyles.subText}>Public</Text>
-      <TouchableWithoutFeedback onPress={onPressPlayRandom}>
+      <TouchableOpacity onPress={onPressPlayRandom}>
         <View
           style={{
             ...puzzleCard.container,
@@ -55,22 +60,23 @@ const PlayScreen = (props: {
             height: 75,
           }}
         >
-          <View>
+          <View style={{ alignItems: "center" }}>
             <Text
               style={{
                 fontFamily: "poppins",
                 color: COLOR_TWO,
                 fontSize: 20,
+                marginBottom: 5,
               }}
             >
               Random public puzzle
             </Text>
-          </View>
-          <View>
-            <Text>Content</Text>
+            <Text>
+              <Icon name="caretright" size={22} color={COLOR_THREE} />
+            </Text>
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
       <Text style={playHomeScreenStyles.subText}>Levels</Text>
       <View style={playHomeScreenStyles.levelsView}>
         <VerticalPuzzleScroll puzzles={levels} onPress={onPressLevel} />

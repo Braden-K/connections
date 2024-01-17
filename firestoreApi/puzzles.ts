@@ -219,7 +219,7 @@ export const getApiRandomPublicPuzzle = async (
     console.log("no publics exist");
     return null;
   }
-
+  console.log("Still in random");
   const getHigherRandomPuzzleQuery: Query<DocumentData, DocumentData> = query(
     puzzlesCollection,
     where("randomId", ">=", Math.floor(Math.random() * 10000)),
@@ -237,6 +237,7 @@ export const getApiRandomPublicPuzzle = async (
   let randomPuzzle: PuzzleBoard | null = null;
 
   while (!randomPuzzle) {
+    console.log("looping");
     try {
       const puzzleBoard = await fetchPublicPuzzleFromQuery(
         getHigherRandomPuzzleQuery,

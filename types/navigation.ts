@@ -32,3 +32,5 @@ export type FriendsStackParamList = {
   PlayPuzzle: { puzzle: PuzzleBoard };
   FriendsPuzzles: { userId: string };
 };
+
+export const TabIconNames = ["play", "appstore1", "contacts", "profile"];

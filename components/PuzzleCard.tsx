@@ -1,7 +1,7 @@
-import { View, Text, TouchableWithoutFeedback } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { puzzleCard } from "../styles/puzzleCardStyles";
 import { PuzzleBoard } from "../types/PuzzleBoard";
-import { COLOR_THREE, COLOR_TWO } from "../styles/constants";
+import { COLOR_THREE } from "../styles/constants";
 import PuzzleCardVisual from "./PuzzleCardVisual";
 
 const PuzzleCard = (props: {
@@ -12,7 +12,7 @@ const PuzzleCard = (props: {
   onPress: () => void;
 }) => {
   return (
-    <TouchableWithoutFeedback onPress={props.onPress}>
+    <TouchableOpacity onPress={props.onPress}>
       <View
         style={{
           ...puzzleCard.container,
@@ -35,7 +35,7 @@ const PuzzleCard = (props: {
           <PuzzleCardVisual puzzle={props.puzzle} />
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 };
 
