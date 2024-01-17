@@ -85,6 +85,7 @@ export const CreatePuzzleForm = (props: {
     dispatch(
       pushUserPuzzle({
         puzzleId,
+        label: puzzleBoard.label,
         puzzle: puzzleBoard.puzzle,
         permission: permissionType,
       })
@@ -112,6 +113,14 @@ export const CreatePuzzleForm = (props: {
         invalidInput={invalidInput}
         setInvalidInput={setInvalidInput}
       />
+      <View style={{ alignItems: "center", marginBottom: 20 }}>
+        <RectangularButton
+          text={"Create Puzzle"}
+          color={COLOR_TWO}
+          width={200}
+          onPress={handleInitialSubmit}
+        />
+      </View>
       {CREATE_FORM_LABELS.map((label, index) => {
         return (
           <Fragment key={index}>

@@ -1,5 +1,11 @@
 import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
+import {
+  COLOR_ONE,
+  COLOR_THREE,
+  COLOR_TWO,
+  TILE_TEXT_COLOR,
+} from "./constants";
 
 export const { width } = Dimensions.get("window");
 
@@ -8,6 +14,7 @@ export const friendsScreenStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     margin: 19,
+    backgroundColor: COLOR_ONE,
   },
   buttonView: {
     flexDirection: "row",
@@ -21,10 +28,12 @@ export const addFriendScreenStyles = StyleSheet.create({
   searchBar: {
     height: 40,
     margin: 12,
-    borderWidth: 2,
+    borderWidth: 3,
     borderRadius: 5,
     padding: 5,
     width: width - 200,
+    borderColor: COLOR_THREE,
+    color: TILE_TEXT_COLOR,
   },
   searchView: {
     flexDirection: "row",
@@ -35,8 +44,8 @@ export const addFriendScreenStyles = StyleSheet.create({
   searchButton: {
     width: 70,
     height: 40,
-    borderColor: "black",
-    borderWidth: 1,
+    borderColor: COLOR_THREE,
+    borderWidth: 2,
     borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
@@ -45,22 +54,24 @@ export const addFriendScreenStyles = StyleSheet.create({
     width: width - 50,
     height: 40,
     marginBottom: 5,
-    borderColor: "black",
-    borderWidth: 1,
+    borderColor: COLOR_TWO,
+    borderWidth: 3,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingLeft: 10,
     paddingRight: 10,
-    borderRadius: 1,
+    borderRadius: 10,
   },
   userListingText: {
     fontFamily: "code",
     fontSize: 20,
+    color: COLOR_TWO,
   },
   plusText: {
     fontFamily: "code",
     fontSize: 20,
+    color: COLOR_THREE,
   },
 });
 

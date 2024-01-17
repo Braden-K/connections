@@ -15,6 +15,7 @@ import { RootState } from "../redux/store";
 import { useSelector } from "react-redux";
 import FriendListing from "../components/FriendListing";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { COLOR_THREE, COLOR_TWO } from "../styles/constants";
 
 const FriendsScreen = (props: {
   navigation: NativeStackNavigationProp<FriendsStackParamList, "FriendsHome">;
@@ -53,11 +54,13 @@ const FriendsScreen = (props: {
         requestingUsers={requestingUsers}
         setRequestingUsers={setRequestingUsers}
       />
-      <Text style={{ fontFamily: "code", fontSize: 30 }}>Friends</Text>
+      <Text style={{ fontFamily: "code", fontSize: 30, color: COLOR_TWO }}>
+        Friends
+      </Text>
       <View style={friendsScreenStyles.buttonView}>
         <PillButton
           text="Add Friend"
-          color="black"
+          color={COLOR_THREE}
           width={150}
           onPress={() => {
             props.navigation.navigate("AddFriend");
@@ -65,12 +68,17 @@ const FriendsScreen = (props: {
         />
         <PillButton
           text="Requests"
-          color="black"
+          color={COLOR_THREE}
           width={150}
           onPress={handlePressRequests}
         />
       </View>
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: 10, alignItems: "center" }}>
+        <Text style={{ color: "black", fontFamily: "code", marginBottom: 3 }}>
+          {friends.length > 0
+            ? "Press to see friends' puzzles"
+            : "Click add friend to search usernames"}
+        </Text>
         <FlatList
           data={friends}
           renderItem={({ item }) => (

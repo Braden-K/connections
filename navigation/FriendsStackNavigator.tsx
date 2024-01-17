@@ -5,6 +5,7 @@ import AddFriendScreen from "../screens/AddFriendScreen";
 import FriendsScreen from "../screens/FriendsScreen";
 import PlayPuzzleScreen from "../screens/PlayPuzzleScreen";
 import FriendsPuzzlesScreen from "../screens/FriendsPuzzleScreen";
+import { COLOR_ONE } from "../styles/constants";
 
 const FriendsStackNavigator = () => {
   const Stack = createNativeStackNavigator<FriendsStackParamList>();
@@ -13,6 +14,9 @@ const FriendsStackNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
+        contentStyle: {
+          backgroundColor: COLOR_ONE,
+        },
       }}
       initialRouteName="FriendsHome"
     >

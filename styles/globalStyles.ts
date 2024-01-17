@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLOR_ONE } from "./constants";
+import { COLOR_ONE, COLOR_TWO } from "./constants";
 
 export const globalPageStyles = StyleSheet.create({
   container: {
@@ -16,10 +16,11 @@ export const globalComponentStyles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     margin: 10,
-    backgroundColor: "black",
+    backgroundColor: COLOR_TWO,
     width: 150,
+    borderRadius: 5,
   },
   buttonText: {
-    color: "white",
+    color: COLOR_ONE,
   },
 });

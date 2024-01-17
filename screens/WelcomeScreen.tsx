@@ -6,6 +6,7 @@ import {
 import { Button } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation";
+import { COLOR_THREE } from "../styles/constants";
 
 const WelcomeScreen = (props: {
   navigation: NativeStackNavigationProp<RootStackParamList, "Welcome">;
@@ -20,7 +21,17 @@ const WelcomeScreen = (props: {
 
   return (
     <SafeAreaView style={globalPageStyles.container}>
-      <Text>Welcome</Text>
+      <Text
+        style={{
+          fontFamily: "code",
+          color: COLOR_THREE,
+          fontSize: 30,
+          marginTop: 50,
+          marginBottom: 40,
+        }}
+      >
+        Welcome
+      </Text>
       <TouchableOpacity
         style={globalComponentStyles.button}
         onPress={onPressLogin}
@@ -31,7 +42,7 @@ const WelcomeScreen = (props: {
         style={globalComponentStyles.button}
         onPress={onPressSignup}
       >
-        <Text style={globalComponentStyles.buttonText}>Sign Up</Text>
+        <Text style={globalComponentStyles.buttonText}>Create Account</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

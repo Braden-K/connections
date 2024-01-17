@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { getApiUserById } from "../firestoreApi/users";
 import { getApiPuzzlesByUserId } from "../firestoreApi/puzzles";
 import LoadingSpinner from "../components/LoadingSpinner";
+import VerticalPuzzleScroll from "../components/VerticalPuzzleScroll";
+import { COLOR_THREE } from "../styles/constants";
 
 const FriendsPuzzlesScreen = (props: {
   navigation: NativeStackNavigationProp<
@@ -46,6 +48,12 @@ const FriendsPuzzlesScreen = (props: {
     getFriendData(userId);
   }, []);
 
+  const onPressPuzzle = (puzzle: PuzzleBoard) => {
+    props.navigation.navigate("PlayPuzzle", {
+      puzzle: puzzle,
+    });
+  };
+
   return (
     <SafeAreaView style={myPuzzlesScreenStyles.container}>
       {isLoading ? (
@@ -59,35 +67,22 @@ const FriendsPuzzlesScreen = (props: {
               margin: 10,
             }}
           >
-            <Text style={playHomeScreenStyles.largeText}>
+            <Text style={playHomeScreenStyles.titleText}>
               {friendUsername}'s Puzzles
             </Text>
           </View>
-          <View style={{ flex: 1, marginTop: 20 }}>
+          <View style={{ flex: 1, marginTop: 20, alignItems: "center" }}>
             {friendPuzzles.length === 0 ? (
-              <Text style={{ fontFamily: "code", fontSize: 20 }}>
+              <Text
+                style={{ fontFamily: "code", fontSize: 20, color: COLOR_THREE }}
+              >
                 {friendUsername} has no puzzles yet!
               </Text>
             ) : (
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <FlatList
-                  data={friendPuzzles}
-                  renderItem={({ item }) => (
-                    <View style={{ marginBottom: 10 }}>
-                      <RectangularButton
-                        text={(friendPuzzles.indexOf(item) + 1).toString()}
-                        color={"black"}
-                        width={300}
-                        onPress={() => {
-                          props.navigation.navigate("PlayPuzzle", {
-                            puzzle: item,
-                          });
-                        }}
-                      />
-                    </View>
-                  )}
-                />
-              </View>
+              <VerticalPuzzleScroll
+                puzzles={friendPuzzles}
+                onPress={onPressPuzzle}
+              />
             )}
           </View>
         </>

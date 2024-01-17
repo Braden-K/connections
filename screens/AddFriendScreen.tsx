@@ -15,12 +15,14 @@ import { putApiUserFriendRequestById } from "../firestoreApi/users";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { pushFriendRequest } from "../redux/userSlice";
+import { COLOR_THREE, COLOR_TWO } from "../styles/constants";
 
 const AddFriendScreen = () => {
   const currentUser = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
   const [searchPhrase, setSearchPhrase] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
+  const [blankUsersText, setBlankUsersText] = useState<string>("");
 
   const onUsernameSearch = async () => {
     if (searchPhrase == "") {
@@ -34,6 +36,7 @@ const AddFriendScreen = () => {
       );
       setUsers(searchResults);
     }
+    setBlankUsersText("No users found");
   };
 
   const handleFriendRequest = async (userId: string) => {
@@ -43,8 +46,8 @@ const AddFriendScreen = () => {
 
   return (
     <SafeAreaView style={friendsScreenStyles.container}>
-      <Text style={{ fontFamily: "code", fontSize: 25 }}>
-        Add Friend Screen
+      <Text style={{ fontFamily: "code", fontSize: 25, color: COLOR_TWO }}>
+        Search Username
       </Text>
       <View style={addFriendScreenStyles.searchView}>
         <TextInput
@@ -56,22 +59,28 @@ const AddFriendScreen = () => {
           style={addFriendScreenStyles.searchButton}
           onPress={onUsernameSearch}
         >
-          <Text>Search</Text>
+          <Text style={{ color: COLOR_THREE, fontFamily: "code" }}>Search</Text>
         </TouchableOpacity>
       </View>
       <View>
-        {users.map((user: User, index) => {
-          return (
-            <UserListing
-              key={index}
-              isSearch={true}
-              username={user.username}
-              requested={currentUser.friendRequests.includes(user.id)}
-              added={currentUser.friends.includes(user.id)}
-              onPress={() => handleFriendRequest(user.id)}
-            />
-          );
-        })}
+        {users.length > 0 ? (
+          users.map((user: User, index) => {
+            return (
+              <UserListing
+                key={index}
+                isSearch={true}
+                username={user.username}
+                requested={currentUser.friendRequests.includes(user.id)}
+                added={currentUser.friends.includes(user.id)}
+                onPress={() => handleFriendRequest(user.id)}
+              />
+            );
+          })
+        ) : (
+          <Text style={{ fontFamily: "code", fontSize: 20, color: COLOR_TWO }}>
+            {blankUsersText}
+          </Text>
+        )}
       </View>
     </SafeAreaView>
   );

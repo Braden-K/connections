@@ -22,6 +22,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { sign } from "crypto";
 
 const usersRef = collection(db, "users");
 
@@ -53,29 +54,24 @@ export const postApiSignUpUser = async (
   email: string,
   password: string,
   username: string
-): Promise<boolean> => {
-  let signupSuccess = false;
-  try {
-    const userCredential: UserCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-    const user: UserInitialization = {
-      email,
-      username,
-      friends: [],
-      friendRequests: ["null"],
-    };
-
-    await postApiUser(user);
-
-    signupSuccess = true;
-  } catch {
-    console.error("error signing up user");
+): Promise<number> => {
+  const user: UserInitialization = {
+    email,
+    username,
+    friends: [],
+    friendRequests: ["null"],
+  };
+  let code = await postApiUser(user);
+  if (code === 1) {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      return 1;
+    } catch {
+      return 0;
+    }
+  } else {
+    return code;
   }
-  return signupSuccess;
 };
 
 const postApiUser = async (user: UserInitialization) => {
@@ -84,19 +80,33 @@ const postApiUser = async (user: UserInitialization) => {
     where("email", "==", user.email)
   );
 
-  const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
+  const usernameTakenQuery: Query<DocumentData, DocumentData> = query(
+    usersRef,
+    where("username", "==", user.username)
+  );
+
+  const userExistsQuerySnapshot: QuerySnapshot<DocumentData, DocumentData> =
     await getDocs(userExistsQuery);
 
-  if (querySnapshot.empty) {
-    try {
-      setDoc(doc(usersRef), user).then(() => {
-        console.log("users collection updated with new entry");
-      });
-    } catch (err) {
-      console.error("error updating users collection", err);
+  const usernameTakenQuerySnapshot: QuerySnapshot<DocumentData, DocumentData> =
+    await getDocs(usernameTakenQuery);
+
+  if (userExistsQuerySnapshot.empty) {
+    if (usernameTakenQuerySnapshot.empty) {
+      try {
+        setDoc(doc(usersRef), user).then(() => {
+          console.log("users collection updated with new entry");
+        });
+        return 1;
+      } catch (err) {
+        console.error("error updating users collection", err);
+        return 0;
+      }
+    } else {
+      return 2;
     }
   } else {
-    console.log("existing user logged in");
+    return 3;
   }
 };
 

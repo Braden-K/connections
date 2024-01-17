@@ -14,6 +14,7 @@ import {
 } from "../firestoreApi/puzzles";
 import { pushAllUserPuzzles, pushLevels } from "../redux/puzzleSlice";
 import LoadingSpinner from "./LoadingSpinner";
+import { COLOR_THREE } from "../styles/constants";
 
 const LoginInput = (props: {
   navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
@@ -39,7 +40,8 @@ const LoginInput = (props: {
         setIsLoading(false);
       }
     } else {
-      console.log("todo: display wrong username or pass");
+      alert("Invalid email or password");
+      setIsLoading(false);
     }
   };
 
@@ -48,12 +50,16 @@ const LoginInput = (props: {
   ) : (
     <>
       <View style={loginScreenStyles.loginInput}>
-        <Text>Email</Text>
+        <Text style={{ fontFamily: "code", fontSize: 18, color: COLOR_THREE }}>
+          Email
+        </Text>
         <TextInput
           style={loginScreenStyles.inputField}
           onChangeText={(text) => setEmail(text)}
         />
-        <Text>Password</Text>
+        <Text style={{ fontFamily: "code", fontSize: 18, color: COLOR_THREE }}>
+          Password
+        </Text>
         <TextInput
           style={loginScreenStyles.inputField}
           onChangeText={(text) => setPassword(text)}
