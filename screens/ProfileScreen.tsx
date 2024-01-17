@@ -16,9 +16,18 @@ const ProfileScreen = () => {
     <SafeAreaView style={profileStyles.container}>
       <Text style={profileStyles.header}>{user.username}</Text>
       <View>
-        <Text>Puzzles Seen {numPuzzlesSeen}</Text>
-        <Text>Puzzles Solved {numPuzzlesSolved}</Text>
-        <Text>Win Rate {winRate}%</Text>
+        <View style={{ alignItems: "center" }}>
+          <Text style={profileStyles.statText}>Puzzles Seen</Text>
+          <Text style={profileStyles.numText}>{numPuzzlesSeen}</Text>
+        </View>
+        <View style={{ alignItems: "center" }}>
+          <Text style={profileStyles.statText}>Puzzles Solved</Text>
+          <Text style={profileStyles.numText}>{numPuzzlesSolved}</Text>
+        </View>
+        <View style={{ alignItems: "center" }}>
+          <Text style={profileStyles.statText}>Win Rate</Text>
+          <Text style={profileStyles.numText}>{winRate}%</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
