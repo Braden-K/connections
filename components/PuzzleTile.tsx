@@ -38,12 +38,25 @@ const PuzzleTile = (props: {
     }
   };
 
+  const calcFontSize = (word: string) => {
+    if (!word || word.length <= 8) {
+      return 16;
+    }
+    return 12;
+  };
+
   return (
     <TouchableOpacity
       style={{ ...playPuzzleScreenStyles.puzzleTile, backgroundColor: color }}
       onPress={onPress}
     >
-      <Text style={{ color: TILE_TEXT_COLOR, fontFamily: "code" }}>
+      <Text
+        style={{
+          color: TILE_TEXT_COLOR,
+          fontFamily: "code",
+          fontSize: calcFontSize(props.tile),
+        }}
+      >
         {props.tile}
       </Text>
     </TouchableOpacity>

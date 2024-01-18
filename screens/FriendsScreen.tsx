@@ -15,7 +15,7 @@ import { RootState } from "../redux/store";
 import { useSelector } from "react-redux";
 import FriendListing from "../components/FriendListing";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { COLOR_THREE, COLOR_TWO } from "../styles/constants";
+import { COLOR_THREE, COLOR_TWO, TILE_TEXT_COLOR } from "../styles/constants";
 
 const FriendsScreen = (props: {
   navigation: NativeStackNavigationProp<FriendsStackParamList, "FriendsHome">;
@@ -72,7 +72,13 @@ const FriendsScreen = (props: {
         />
       </View>
       <View style={{ marginTop: 10, alignItems: "center" }}>
-        <Text style={{ color: "black", fontFamily: "code", marginBottom: 3 }}>
+        <Text
+          style={{
+            color: TILE_TEXT_COLOR,
+            fontFamily: "code",
+            marginBottom: 3,
+          }}
+        >
           {friends.length > 0
             ? "Press to see friends' puzzles"
             : "Click add friend to search usernames"}

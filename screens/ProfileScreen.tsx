@@ -3,12 +3,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { profileStyles } from "../styles/profileTabStyles";
 import PillButton from "../components/PillButton";
-import { COLOR_ONE, COLOR_TWO } from "../styles/constants";
+import { COLOR_ONE, COLOR_TWO, TILE_TEXT_COLOR } from "../styles/constants";
 import { auth } from "../firebaseConfig";
 import { signOut } from "firebase/auth";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ProfileStackParamList } from "../types/navigation";
 import { createPerformanceReport } from "../utils/performanceUtils";
+import PerformanceCard from "../components/PerformanceCard";
 
 const ProfileScreen = (props: {
   navigation: NativeStackNavigationProp<ProfileStackParamList, "Profile">;
@@ -45,13 +46,30 @@ const ProfileScreen = (props: {
           <Text style={{ color: COLOR_TWO, fontFamily: "code" }}>Log out</Text>
         </TouchableOpacity>
       </View>
-      <View style={profileStyles.performanceCard}>
-        <View style={{ alignItems: "center" }}></View>
-        <View style={{ alignItems: "center" }}>
-          <Text style={profileStyles.statText}>Puzzles Solved</Text>
-          <Text style={profileStyles.numText}>{}</Text>
-        </View>
-      </View>
+      <PerformanceCard
+        desc1="TOTAL PUZZLES SOLVED"
+        stat1={performaceReport.totalPuzzlesSolved}
+        desc2="LEVELS SOLVED"
+        stat2={performaceReport.levelsSolved}
+        desc3="OTHERS SOLVED"
+        stat3={performaceReport.nonLevelsSolved}
+      />
+      <PerformanceCard
+        desc1="TOTAL WIN RATE"
+        stat1={performaceReport.totalWinRate}
+        desc2="LEVEL WIN RATE"
+        stat2={performaceReport.levelWinRate}
+        desc3="NON-LEVEL WIN RATE"
+        stat3={performaceReport.nonLevelWinRate}
+      />
+      <PerformanceCard
+        desc1="AVG MISTAKES MADE"
+        stat1={performaceReport.totalAvgMistakes}
+        desc2="TOTAL PUZZLES SEEN"
+        stat2={performaceReport.totalPuzzlesSeen}
+        desc3="NON-LEVELS SEEN"
+        stat3={performaceReport.nonLevelsSeen}
+      />
     </SafeAreaView>
   );
 };

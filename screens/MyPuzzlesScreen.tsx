@@ -9,7 +9,7 @@ import { playHomeScreenStyles } from "../styles/playTabStyles";
 import PillButton from "../components/PillButton";
 import RectangularButton from "../components/RectangularButton";
 import VerticalPuzzleScroll from "../components/VerticalPuzzleScroll";
-import { COLOR_THREE } from "../styles/constants";
+import { COLOR_THREE, TILE_TEXT_COLOR } from "../styles/constants";
 
 const MyPuzzlesScreen = (props: {
   navigation: NativeStackNavigationProp<CreateStackParamList, "MyPuzzles">;
@@ -45,7 +45,9 @@ const MyPuzzlesScreen = (props: {
       </View>
       <View style={{ flex: 1, marginTop: 20 }}>
         {userPuzzles.length === 0 ? (
-          <Text style={{ fontFamily: "code", fontSize: 20 }}>
+          <Text
+            style={{ fontFamily: "code", fontSize: 20, color: TILE_TEXT_COLOR }}
+          >
             You have no puzzles yet!
           </Text>
         ) : (

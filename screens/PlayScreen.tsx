@@ -145,7 +145,9 @@ const PlayScreen = (props: {
           <Text
             style={{ color: COLOR_TWO, fontFamily: "poppins", marginTop: 50 }}
           >
-            You played all existing levels!
+            {!showCompleted
+              ? "You played all existing levels!"
+              : "Play a level!"}
           </Text>
         )}
       </View>

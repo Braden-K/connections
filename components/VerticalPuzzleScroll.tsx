@@ -22,6 +22,7 @@ const VerticalPuzzleScroll = (props: {
       decelerationRate={0}
       snapToAlignment="center"
       showsVerticalScrollIndicator={false}
+      style={{ marginTop: 5 }}
     >
       {groupPuzzles(props.puzzles, 2).map((puzzle, index) => {
         return (
@@ -34,7 +35,7 @@ const VerticalPuzzleScroll = (props: {
             }}
           >
             <PuzzleCard
-              width={125}
+              width={140}
               height={175}
               title={puzzle[0].label}
               puzzle={puzzle[0]}
@@ -42,7 +43,7 @@ const VerticalPuzzleScroll = (props: {
             />
             {puzzle[1] ? (
               <PuzzleCard
-                width={125}
+                width={140}
                 height={175}
                 title={puzzle[1].label}
                 puzzle={puzzle[1]}

@@ -1,5 +1,10 @@
 import { StyleSheet } from "react-native";
-import { COLOR_FOUR, COLOR_ONE } from "./constants";
+import {
+  COLOR_FOUR,
+  COLOR_ONE,
+  TILE_COLOR,
+  TILE_TEXT_COLOR,
+} from "./constants";
 
 export const puzzleCard = StyleSheet.create({
   container: {
@@ -22,6 +27,7 @@ export const puzzleCard = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+    marginTop: 10,
     margin: 5,
   },
   visualRow: {
@@ -33,15 +39,15 @@ export const puzzleCard = StyleSheet.create({
     marginLeft: 3,
     marginRight: 3,
     marginBottom: 3,
-    width: 50,
-    height: 50,
-    backgroundColor: COLOR_FOUR,
+    width: 60,
+    height: 60,
+    backgroundColor: TILE_COLOR,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
   },
   visualText: {
     fontFamily: "code",
-    fontSize: 10,
+    color: COLOR_FOUR,
   },
 });
