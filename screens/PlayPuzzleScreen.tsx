@@ -1,4 +1,4 @@
-import { Text, SafeAreaView, View } from "react-native";
+import { Text, SafeAreaView, View, TouchableOpacity } from "react-native";
 import {
   playHomeScreenStyles,
   playPuzzleScreenStyles,
@@ -15,6 +15,7 @@ import {
   COLOR_THREE,
   COLOR_TWO,
   CORRECT_COLOR_ARRAY,
+  TILE_TEXT_COLOR,
 } from "../styles/constants";
 import CorrectPuzzleModal from "../components/CorrectPuzzleModal";
 import {
@@ -25,6 +26,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { loadUser } from "../redux/userSlice";
 import { Stats } from "../types/User";
+import { stat } from "fs";
+import { deleteApiPuzzle } from "../firestoreApi/puzzles";
+import { pushAllUserPuzzles } from "../redux/puzzleSlice";
+import Icon from "react-native-vector-icons/AntDesign";
 
 const PlayPuzzleScreen = (props: {
   navigation: NativeStackNavigationProp<PlayStackParamList, "PlayPuzzle">;
@@ -32,6 +37,9 @@ const PlayPuzzleScreen = (props: {
 }) => {
   const { puzzle } = props.route.params;
   const user = useSelector((state: RootState) => state.user.user);
+  const userPuzzles = useSelector(
+    (state: RootState) => state.puzzle.userPuzzles
+  );
   const [shuffledTiles, setShuffledTiles] = useState<Array<string>>([]);
   const [pressedTiles, setPressedTiles] = useState<Array<string>>([]);
   const [correctCategories, setCorrectCategories] = useState<Array<Category>>(
@@ -44,6 +52,7 @@ const PlayPuzzleScreen = (props: {
     useState<boolean>(false);
   const [alreadyGuessed, setAlreadyGuessed] = useState<string[][]>([]);
   const dispatch = useDispatch();
+  const levels = useSelector((state: RootState) => state.puzzle.levels);
 
   useEffect(() => {
     if (numMistakes === 4 || correctCategories.length === 4) {
@@ -54,7 +63,8 @@ const PlayPuzzleScreen = (props: {
           user.id,
           puzzle.puzzleId,
           numMistakes < 4,
-          numMistakes
+          numMistakes,
+          levels.includes(puzzle)
         );
         const refreshedUser = await getApiUserById(user.id);
         if (refreshedUser) {
@@ -72,8 +82,6 @@ const PlayPuzzleScreen = (props: {
       }
     }
   }, [numMistakes, correctCategories]);
-
-  console.log("user", user);
 
   useEffect(() => {
     let tileArr: Array<string> = [];
@@ -129,6 +137,15 @@ const PlayPuzzleScreen = (props: {
     return xs;
   };
 
+  const onPressDelete = async () => {
+    await deleteApiPuzzle(puzzle.puzzleId);
+    const updatedUserPuzzles = userPuzzles.filter(
+      (p) => p.puzzleId !== puzzle.puzzleId
+    );
+    dispatch(pushAllUserPuzzles(updatedUserPuzzles));
+    props.navigation.goBack();
+  };
+
   return (
     <SafeAreaView style={playHomeScreenStyles.container}>
       <View style={playHomeScreenStyles.headerView}>
@@ -142,9 +159,14 @@ const PlayPuzzleScreen = (props: {
           setVisible={setCorrectModalVisible}
           correctPuzzle={numMistakes < 4}
         />
-        <Text style={playHomeScreenStyles.titleText}>
-          {"  " + puzzle.label}
-        </Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Icon name="arrowleft" size={30} color={COLOR_TWO} />
+          </TouchableOpacity>
+          <Text style={{ ...playHomeScreenStyles.titleText, marginLeft: 5 }}>
+            {puzzle.label}
+          </Text>
+        </View>
         <PillButton
           text={generateXs(numMistakes)}
           color={COLOR_TWO}
@@ -177,6 +199,15 @@ const PlayPuzzleScreen = (props: {
           width={125}
           onPress={onPressDeselect}
         />
+      </View>
+      <View style={{ position: "absolute", bottom: 0 }}>
+        {userPuzzles.includes(puzzle) && (
+          <TouchableOpacity onPress={onPressDelete}>
+            <Text style={{ color: TILE_TEXT_COLOR, fontFamily: "code" }}>
+              Delete Puzzle
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );

@@ -16,7 +16,6 @@ export const profileStyles = StyleSheet.create({
     fontFamily: "poppins",
     fontSize: 30,
     color: COLOR_TWO,
-    marginBottom: 30,
   },
   statText: {
     fontFamily: "code",
@@ -28,5 +27,16 @@ export const profileStyles = StyleSheet.create({
     fontSize: 30,
     color: COLOR_THREE,
     marginBottom: 20,
+  },
+  performanceCard: {
+    backgroundColor: COLOR_ONE,
+    width: "90%",
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+    marginBottom: 20,
+    shadowColor: "black",
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.8,
   },
 });

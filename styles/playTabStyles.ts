@@ -63,7 +63,6 @@ export const playHomeScreenStyles = StyleSheet.create({
     fontSize: 30,
     fontFamily: "poppins",
     color: COLOR_TWO,
-    marginBottom: 10,
   },
   subText: {
     fontSize: 25,
@@ -105,6 +104,7 @@ export const playHomeScreenStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
+    alignContent: "center",
   },
   publicButtonView: {
     justifyContent: "center",

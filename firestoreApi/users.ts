@@ -59,7 +59,14 @@ export const postApiSignUpUser = async (
     email,
     username,
     friends: [],
-    friendRequests: ["null"],
+    friendRequests: [],
+    puzzlesSeen: [],
+    performanceMetrics: {
+      levelsSeen: 0,
+      levelsSolved: 0,
+      nonLevelsSeen: 0,
+      nonLevelsSolved: 0,
+    },
   };
   let code = await postApiUser(user);
   if (code === 1) {
@@ -294,12 +301,14 @@ export const putApiUserPuzzleAttemptById = async (
   userId: string,
   puzzleId: string,
   solved: boolean,
-  mistakesMade: number
+  mistakesMade: number,
+  isLevel: boolean
 ) => {
   try {
     const userDocRef = doc(usersRef, userId);
     const userDocSnap = await getDoc(userDocRef);
-    if (userDocSnap.exists()) {
+    const userDocData = userDocSnap.data();
+    if (userDocSnap.exists() && userDocData) {
       await updateDoc(userDocRef, {
         puzzlesSeen: arrayUnion({
           puzzleId: puzzleId,
@@ -307,9 +316,21 @@ export const putApiUserPuzzleAttemptById = async (
           attemptedOn: Date.now(),
           mistakesMade: mistakesMade,
         }),
+        performanceMetrics: {
+          levelsSeen:
+            userDocData.performanceMetrics.levelsSeen + (isLevel ? 1 : 0),
+          levelsSolved:
+            userDocData.performanceMetrics.levelsSolved +
+            (isLevel && solved ? 1 : 0),
+          nonLevelsSeen:
+            userDocData.performanceMetrics.nonLevelsSeen + (!isLevel ? 1 : 0),
+          nonLevelsSolved:
+            userDocData.performanceMetrics.nonLevelsSolved +
+            (!isLevel && solved ? 1 : 0),
+        },
       });
     } else {
-      console.error("user does not exist");
+      console.error("user does not exist or error getting data");
       return;
     }
   } catch {

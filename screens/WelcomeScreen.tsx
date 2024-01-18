@@ -12,11 +12,11 @@ const WelcomeScreen = (props: {
   navigation: NativeStackNavigationProp<RootStackParamList, "Welcome">;
 }) => {
   const onPressLogin = () => {
-    props.navigation.navigate("Login");
+    props.navigation.replace("Login");
   };
 
   const onPressSignup = () => {
-    props.navigation.navigate("Signup");
+    props.navigation.replace("Signup");
   };
 
   return (

@@ -1,9 +1,10 @@
-export const COLOR_ONE = "#313145";
+export const COLOR_ONE = "#2b2b2b";
+//export const COLOR_ONE = "#313145";
 export const COLOR_TWO = "#f24a4a";
 export const COLOR_THREE = "#ffcc66";
 export const COLOR_FOUR = "#919191";
 
-export const TILE_COLOR = "#272735";
+export const TILE_COLOR = "#212121";
 export const PRESSED_TILE_COLOR = COLOR_TWO;
 export const TILE_TEXT_COLOR = "#dbdbdb";
 export const CORRECT_COLOR_BLUE = "#0099cc";

@@ -33,4 +33,9 @@ export type FriendsStackParamList = {
   FriendsPuzzles: { userId: string };
 };
 
+export type ProfileStackParamList = {
+  Profile: undefined;
+  Welcome: undefined;
+};
+
 export const TabIconNames = ["play", "appstore1", "contacts", "profile"];

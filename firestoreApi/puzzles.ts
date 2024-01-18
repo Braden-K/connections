@@ -3,6 +3,7 @@ import {
   QueryDocumentSnapshot,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   limit,
@@ -297,4 +298,14 @@ export const getApiLevelPuzzles = async (): Promise<Array<PuzzleBoard>> => {
     };
   }
   return [];
+};
+
+export const deleteApiPuzzle = async (puzzleId: string) => {
+  try {
+    await deleteDoc(doc(puzzlesCollection, puzzleId));
+  } catch {
+    (e: Error) => {
+      console.log("error deleting puzzle", e.message);
+    };
+  }
 };

@@ -136,10 +136,18 @@ const PlayScreen = (props: {
             seen
           </Text>
         </View>
-        <VerticalPuzzleScroll
-          puzzles={filterLevels(levels)}
-          onPress={onPressLevel}
-        />
+        {filterLevels(levels).length > 0 ? (
+          <VerticalPuzzleScroll
+            puzzles={filterLevels(levels)}
+            onPress={onPressLevel}
+          />
+        ) : (
+          <Text
+            style={{ color: COLOR_TWO, fontFamily: "poppins", marginTop: 50 }}
+          >
+            You played all existing levels!
+          </Text>
+        )}
       </View>
     </SafeAreaView>
   );

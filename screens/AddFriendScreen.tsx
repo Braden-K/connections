@@ -15,9 +15,18 @@ import { putApiUserFriendRequestById } from "../firestoreApi/users";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { pushFriendRequest } from "../redux/userSlice";
-import { COLOR_THREE, COLOR_TWO } from "../styles/constants";
+import { COLOR_ONE, COLOR_THREE, COLOR_TWO } from "../styles/constants";
+import Icon from "react-native-vector-icons/AntDesign";
+import { playHomeScreenStyles } from "../styles/playTabStyles";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { FriendsStackParamList } from "../types/navigation";
 
-const AddFriendScreen = () => {
+const AddFriendScreen = (props: {
+  navigation: NativeStackNavigationProp<
+    FriendsStackParamList,
+    "FriendsPuzzles"
+  >;
+}) => {
   const currentUser = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
   const [searchPhrase, setSearchPhrase] = useState<string>("");
@@ -46,9 +55,24 @@ const AddFriendScreen = () => {
 
   return (
     <SafeAreaView style={friendsScreenStyles.container}>
-      <Text style={{ fontFamily: "code", fontSize: 25, color: COLOR_TWO }}>
-        Search Username
-      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          <Icon name="arrowleft" size={30} color={COLOR_TWO} />
+        </TouchableOpacity>
+        <Text style={{ fontSize: 22, color: COLOR_TWO, fontFamily: "poppins" }}>
+          Search Username
+        </Text>
+        <TouchableOpacity disabled={true}>
+          <Icon name="arrowleft" size={30} color={COLOR_ONE} />
+        </TouchableOpacity>
+      </View>
       <View style={addFriendScreenStyles.searchView}>
         <TextInput
           style={addFriendScreenStyles.searchBar}

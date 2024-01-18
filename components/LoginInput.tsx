@@ -36,7 +36,7 @@ const LoginInput = (props: {
         const levels = await getApiLevelPuzzles();
         dispatch(pushAllUserPuzzles(userPuzzles));
         dispatch(pushLevels(levels));
-        props.navigation.navigate("Home");
+        props.navigation.replace("Home");
         setIsLoading(false);
       }
     } else {

@@ -10,6 +10,12 @@ const initialState: UserState = {
     friends: [],
     friendRequests: [],
     puzzlesSeen: [],
+    performanceMetrics: {
+      levelsSeen: 0,
+      levelsSolved: 0,
+      nonLevelsSeen: 0,
+      nonLevelsSolved: 0,
+    },
   },
 };
 
