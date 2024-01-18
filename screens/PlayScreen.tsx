@@ -65,7 +65,7 @@ const PlayScreen = (props: {
 
   const onPressPlayRandom = async () => {
     console.log("In random");
-    const random = await getApiRandomPublicPuzzle(user.id);
+    let random = await getApiRandomPublicPuzzle(user.id);
     if (random) {
       props.navigation.navigate("PlayPuzzle", { puzzle: random });
     } else {
