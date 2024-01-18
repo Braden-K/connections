@@ -160,7 +160,7 @@ const publicPuzzlesExist = async (
     const querySnapshot: QuerySnapshot<DocumentData, DocumentData> =
       await getDocs(publicsExistQuery);
 
-    return querySnapshot.empty;
+    return !querySnapshot.empty;
   } catch {
     (e: Error) => {
       console.log("error in isCollectionEmpty", e.message);

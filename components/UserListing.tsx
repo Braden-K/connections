@@ -28,6 +28,7 @@ const UserListing = (props: {
       <TouchableOpacity
         onPress={props.onPress}
         disabled={props.requested || props.added}
+        style={{ width: "100%", alignItems: "flex-end" }}
       >
         <Text style={addFriendScreenStyles.plusText}>{rightDisplayText}</Text>
       </TouchableOpacity>

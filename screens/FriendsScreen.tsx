@@ -71,7 +71,7 @@ const FriendsScreen = (props: {
           onPress={handlePressRequests}
         />
       </View>
-      <View style={{ marginTop: 10, alignItems: "center" }}>
+      <View style={{ marginTop: 10, alignItems: "center", width: "100%" }}>
         <Text
           style={{
             color: TILE_TEXT_COLOR,
@@ -81,10 +81,11 @@ const FriendsScreen = (props: {
         >
           {friends.length > 0
             ? "Press to see friends' puzzles"
-            : "Click add friend to search usernames"}
+            : "Tap add friend to search usernames"}
         </Text>
         {!isLoading ? (
           <FlatList
+            style={{ width: "100%" }}
             data={friends}
             renderItem={({ item }) => (
               <FriendListing

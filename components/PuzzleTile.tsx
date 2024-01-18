@@ -14,8 +14,6 @@ const PuzzleTile = (props: {
 }) => {
   const [color, setColor] = useState<string>(TILE_COLOR);
 
-  console.log("tile", props.tile);
-
   useEffect(() => {
     if (props.pressedTiles.includes(props.tile)) {
       setColor(PRESSED_TILE_COLOR);

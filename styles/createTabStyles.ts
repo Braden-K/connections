@@ -79,7 +79,7 @@ export const permissionsModalStyles = StyleSheet.create({
     paddingTop: 150,
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: COLOR_ONE,
     padding: 20,
     borderRadius: 10,
     alignItems: "center",
@@ -104,9 +104,11 @@ export const permissionsModalStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
+    backgroundColor: COLOR_ONE,
   },
   checkBoxText: {
     fontFamily: "code",
     fontSize: 20,
+    color: COLOR_THREE,
   },
 });

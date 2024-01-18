@@ -4,6 +4,7 @@ import { PermissionType } from "../types/PuzzleBoard";
 import { CheckBox } from "@rneui/themed";
 import { Permission } from "../types/PuzzleBoard";
 import PillButton from "./PillButton";
+import { COLOR_ONE, COLOR_THREE, COLOR_TWO } from "../styles/constants";
 
 const PuzzlePermissionsModal = (props: {
   visible: boolean;
@@ -22,17 +23,18 @@ const PuzzlePermissionsModal = (props: {
             <>
               <Text
                 style={{
-                  fontFamily: "code",
+                  fontFamily: "poppins",
                   fontSize: 20,
-                  alignItems: "center",
+                  alignSelf: "center",
                   marginBottom: 100,
+                  color: COLOR_TWO,
                 }}
               >
                 Puzzle fields cannot be blank or duplicated...
               </Text>
               <PillButton
                 text="Fix"
-                color="black"
+                color={COLOR_THREE}
                 width={100}
                 onPress={() => {
                   props.setVisible(false);
@@ -44,9 +46,10 @@ const PuzzlePermissionsModal = (props: {
             <>
               <Text
                 style={{
-                  fontFamily: "code",
+                  fontFamily: "poppins",
                   fontSize: 20,
                   alignItems: "center",
+                  color: COLOR_TWO,
                 }}
               >
                 Who can see your puzzle?
@@ -56,8 +59,9 @@ const PuzzlePermissionsModal = (props: {
                   <CheckBox
                     checked={props.permission === Permission.PUBLIC}
                     onPress={() => props.setPermission(Permission.PUBLIC)}
-                    checkedIcon="dot-circle-o"
-                    uncheckedIcon="circle-o"
+                    checkedColor="COLOR_TWO"
+                    uncheckedColor="COLOR_ONE"
+                    style={{ backgroundColor: COLOR_ONE }}
                   />
                   <Text style={permissionsModalStyles.checkBoxText}>
                     Anyone
@@ -67,8 +71,8 @@ const PuzzlePermissionsModal = (props: {
                   <CheckBox
                     checked={props.permission === Permission.FRIENDS_ONLY}
                     onPress={() => props.setPermission(Permission.FRIENDS_ONLY)}
-                    checkedIcon="dot-circle-o"
-                    uncheckedIcon="circle-o"
+                    checkedColor="COLOR_TWO"
+                    uncheckedColor="TILE_TEXT_COLOR"
                   />
                   <Text style={permissionsModalStyles.checkBoxText}>
                     Friends only
@@ -78,8 +82,8 @@ const PuzzlePermissionsModal = (props: {
                   <CheckBox
                     checked={props.permission === Permission.PRIVATE}
                     onPress={() => props.setPermission(Permission.PRIVATE)}
-                    checkedIcon="dot-circle-o"
-                    uncheckedIcon="circle-o"
+                    checkedColor="COLOR_TWO"
+                    uncheckedColor="COLOR_TWO"
                   />
                   <Text style={permissionsModalStyles.checkBoxText}>
                     Just me
@@ -88,7 +92,7 @@ const PuzzlePermissionsModal = (props: {
               </View>
               <PillButton
                 text="create"
-                color="black"
+                color={COLOR_TWO}
                 width={100}
                 onPress={props.onCreate}
               />

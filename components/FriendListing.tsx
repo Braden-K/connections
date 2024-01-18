@@ -3,13 +3,13 @@ import { addFriendScreenStyles } from "../styles/friendsTabStyles";
 
 const FriendListing = (props: { username: string; onPress: () => void }) => {
   return (
-    <View style={addFriendScreenStyles.UserListingView}>
-      <TouchableOpacity onPress={props.onPress}>
+    <TouchableOpacity onPress={props.onPress} style={{ width: "100%" }}>
+      <View style={addFriendScreenStyles.UserListingView}>
         <Text style={addFriendScreenStyles.userListingText}>
           {props.username}
         </Text>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 

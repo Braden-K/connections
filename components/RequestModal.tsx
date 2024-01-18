@@ -65,8 +65,7 @@ const RequestModal = (props: {
             </Text>
             <Text></Text>
           </View>
-
-          <View>
+          <View style={{ alignItems: "center", margin: 10, padding: 10 }}>
             {props.requestingUsers.length >= 1 ? (
               props.requestingUsers.map((user, index) => {
                 return (
@@ -84,7 +83,7 @@ const RequestModal = (props: {
               <View style={{ alignItems: "center" }}>
                 <Text
                   style={{
-                    fontSize: 25,
+                    fontSize: 20,
                     fontFamily: "code",
                     marginTop: 80,
                     marginBottom: 40,
