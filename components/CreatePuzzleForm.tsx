@@ -56,7 +56,9 @@ export const CreatePuzzleForm = (props: {
 
   const handleFinalSubmit = async () => {
     props.setIsLoading(true);
-    const pfd = [...puzzleFormData];
+    const pfd = puzzleFormData.map((entry) => {
+      return entry.trim().toUpperCase();
+    });
 
     const c1: Category = {
       descriptor: pfd[0],

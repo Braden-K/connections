@@ -152,7 +152,7 @@ const publicPuzzlesExist = async (
   try {
     const publicsExistQuery: Query<DocumentData, DocumentData> = query(
       puzzlesCollection,
-      where(loggedInUserId, "!=", "userId"),
+      where("userId", "!=", loggedInUserId),
       limit(1)
     );
 

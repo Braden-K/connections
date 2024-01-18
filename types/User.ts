@@ -2,6 +2,7 @@ export type Stats = {
   puzzleId: string;
   solved: boolean;
   attemptedOn: any;
+  mistakesMade: number;
 };
 
 export type User = {

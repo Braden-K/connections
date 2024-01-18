@@ -57,9 +57,10 @@ export const playHomeScreenStyles = StyleSheet.create({
   },
   levelsView: {
     margin: 10,
+    alignItems: "center",
   },
   titleText: {
-    fontSize: 40,
+    fontSize: 30,
     fontFamily: "poppins",
     color: COLOR_TWO,
     marginBottom: 10,

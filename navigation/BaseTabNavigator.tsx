@@ -20,9 +20,21 @@ const BaseTabNavigator = () => {
       tabBar={(props) => <TabBar {...props} />}
     >
       <Tab.Screen name="Play" component={PlayStackNavigator} />
-      <Tab.Screen name="Create" component={CreateStackNavigator} />
-      <Tab.Screen name="Friends" component={FriendsStackNavigator} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen
+        name="Create"
+        component={CreateStackNavigator}
+        options={{ tabBarLabel: "Create", unmountOnBlur: true }}
+      />
+      <Tab.Screen
+        name="Friends"
+        component={FriendsStackNavigator}
+        options={{ tabBarLabel: "Friends", unmountOnBlur: true }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ tabBarLabel: "Profile", unmountOnBlur: true }}
+      />
     </Tab.Navigator>
   );
 };

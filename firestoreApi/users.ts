@@ -293,7 +293,8 @@ export const deleteApiUserFriendRequest = async (
 export const putApiUserPuzzleAttemptById = async (
   userId: string,
   puzzleId: string,
-  solved: boolean
+  solved: boolean,
+  mistakesMade: number
 ) => {
   try {
     const userDocRef = doc(usersRef, userId);
@@ -304,6 +305,7 @@ export const putApiUserPuzzleAttemptById = async (
           puzzleId: puzzleId,
           solved: solved,
           attemptedOn: Date.now(),
+          mistakesMade: mistakesMade,
         }),
       });
     } else {

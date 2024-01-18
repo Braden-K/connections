@@ -53,7 +53,8 @@ const PlayPuzzleScreen = (props: {
         await putApiUserPuzzleAttemptById(
           user.id,
           puzzle.puzzleId,
-          numMistakes < 4
+          numMistakes < 4,
+          numMistakes
         );
         const refreshedUser = await getApiUserById(user.id);
         if (refreshedUser) {

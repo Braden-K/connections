@@ -5,7 +5,6 @@ import { PuzzleBoard } from "../types/PuzzleBoard";
 
 const initialState: PuzzleState = {
   userPuzzles: [],
-  puzzles: [],
   levels: [],
 };
 
@@ -16,21 +15,18 @@ export const puzzleSlice = createSlice({
     pushUserPuzzle: (state, action: PayloadAction<PuzzleBoard>) => {
       return {
         userPuzzles: [...state.userPuzzles, action.payload],
-        puzzles: [...state.puzzles, action.payload],
         levels: [...state.levels],
       };
     },
     pushAllUserPuzzles: (state, action: PayloadAction<Array<PuzzleBoard>>) => {
       return {
         userPuzzles: action.payload,
-        puzzles: action.payload,
         levels: state.levels,
       };
     },
     pushLevels: (state, action: PayloadAction<Array<PuzzleBoard>>) => {
       return {
         userPuzzles: state.userPuzzles,
-        puzzles: state.puzzles,
         levels: action.payload,
       };
     },
