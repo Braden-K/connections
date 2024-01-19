@@ -79,6 +79,7 @@ export const CreatePuzzleForm = (props: {
 
     const puzzleBoard: PuzzleBoardPostQuery = {
       label: pfd[20],
+      username: user.username,
       puzzle: [c1, c2, c3, c4],
       permission: permissionType,
     };
@@ -87,6 +88,7 @@ export const CreatePuzzleForm = (props: {
     dispatch(
       pushUserPuzzle({
         puzzleId,
+        username: user.username,
         label: puzzleBoard.label,
         puzzle: puzzleBoard.puzzle,
         permission: permissionType,

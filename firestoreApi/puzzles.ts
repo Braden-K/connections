@@ -35,6 +35,7 @@ const puzzleBoardToCollectionFormat = (
 
   return {
     label: pb.label,
+    username: pb.username,
     categories,
     tiles1: pb.puzzle[0].tiles,
     tiles2: pb.puzzle[1].tiles,
@@ -67,6 +68,7 @@ const collectionFormatToPuzzleBoard = (
 
   return {
     label: cf.label,
+    username: cf.username,
     puzzleId,
     puzzle: [c1, c2, c3, c4],
     permission:
@@ -117,6 +119,7 @@ export const getApiPuzzlesByUserId = async (
       querySnapshot.forEach((doc: DocumentData) => {
         const {
           label,
+          username,
           categories,
           tiles1,
           tiles2,
@@ -126,6 +129,7 @@ export const getApiPuzzlesByUserId = async (
         } = doc.data();
         const puzzleBoard = collectionFormatToPuzzleBoard(doc.id, {
           label,
+          username,
           categories,
           tiles1,
           tiles2,
@@ -181,6 +185,7 @@ const fetchPublicPuzzleFromQuery = async (
       querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
         const {
           label,
+          username,
           categories,
           tiles1,
           tiles2,
@@ -191,6 +196,7 @@ const fetchPublicPuzzleFromQuery = async (
         if (doc.data().userId !== userId) {
           puzzleBoard = collectionFormatToPuzzleBoard(doc.id, {
             label,
+            username,
             categories,
             tiles1,
             tiles2,
@@ -271,6 +277,7 @@ export const getApiLevelPuzzles = async (): Promise<Array<PuzzleBoard>> => {
       querySnapshot.forEach((doc: DocumentData) => {
         const {
           label,
+          username,
           categories,
           tiles1,
           tiles2,
@@ -280,6 +287,7 @@ export const getApiLevelPuzzles = async (): Promise<Array<PuzzleBoard>> => {
         } = doc.data();
         const puzzleBoard = collectionFormatToPuzzleBoard(doc.id, {
           label,
+          username,
           categories,
           tiles1,
           tiles2,

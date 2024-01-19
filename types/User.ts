@@ -1,5 +1,7 @@
 export type Stats = {
   puzzleId: string;
+  label: string;
+  createdBy: string;
   solved: boolean;
   attemptedOn: any;
   mistakesMade: number;

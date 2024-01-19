@@ -62,6 +62,7 @@ const PlayPuzzleScreen = (props: {
         await putApiUserPuzzleAttemptById(
           user.id,
           puzzle.puzzleId,
+          puzzle.username,
           numMistakes < 4,
           numMistakes,
           levels.includes(puzzle)

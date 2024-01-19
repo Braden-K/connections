@@ -17,6 +17,7 @@ export type CreateStackParamList = {
 export type PlayStackParamList = {
   PlayHome: undefined;
   PlayPuzzle: { puzzle: PuzzleBoard };
+  Archive: undefined;
 };
 
 export type PlayPuzzleRouteProp = RouteProp<PlayStackParamList, "PlayPuzzle">;

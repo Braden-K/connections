@@ -300,6 +300,7 @@ export const deleteApiUserFriendRequest = async (
 export const putApiUserPuzzleAttemptById = async (
   userId: string,
   puzzleId: string,
+  createdBy: string,
   solved: boolean,
   mistakesMade: number,
   isLevel: boolean
@@ -312,6 +313,7 @@ export const putApiUserPuzzleAttemptById = async (
       await updateDoc(userDocRef, {
         puzzlesSeen: arrayUnion({
           puzzleId: puzzleId,
+          createdBy: createdBy,
           solved: solved,
           attemptedOn: Date.now(),
           mistakesMade: mistakesMade,

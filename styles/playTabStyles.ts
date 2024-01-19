@@ -153,3 +153,11 @@ export const playModalStyles = StyleSheet.create({
     width: width - 50,
   },
 });
+
+export const archiveScreenStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: COLOR_ONE,
+  },
+});

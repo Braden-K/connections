@@ -79,7 +79,24 @@ const PlayScreen = (props: {
 
   return (
     <SafeAreaView style={playHomeScreenStyles.container}>
-      <Text style={playHomeScreenStyles.titleText}>Play</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <View style={{ width: 100 }} />
+        <Text style={playHomeScreenStyles.titleText}>Play</Text>
+        <PillButton
+          text="Archive"
+          color={COLOR_TWO}
+          width={100}
+          onPress={() => {
+            props.navigation.navigate("Archive");
+          }}
+        />
+      </View>
       <Text style={playHomeScreenStyles.subText}>Public</Text>
       <TouchableOpacity onPress={onPressPlayRandom}>
         <View
