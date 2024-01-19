@@ -52,7 +52,7 @@ const FriendsScreen = (props: {
         requestingUsers={requestingUsers}
         setRequestingUsers={setRequestingUsers}
       />
-      <Text style={{ fontFamily: "code", fontSize: 30, color: COLOR_TWO }}>
+      <Text style={{ fontFamily: "poppins", fontSize: 30, color: COLOR_TWO }}>
         Friends
       </Text>
       <View style={friendsScreenStyles.buttonView}>
@@ -100,7 +100,9 @@ const FriendsScreen = (props: {
             keyExtractor={(item) => item.id}
           />
         ) : (
-          <LoadingSpinner />
+          <View>
+            <LoadingSpinner />
+          </View>
         )}
       </View>
     </SafeAreaView>

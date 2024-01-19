@@ -5,6 +5,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -220,13 +221,11 @@ const fetchPublicPuzzleFromQuery = async (
 export const getApiRandomPublicPuzzle = async (
   userId: string
 ): Promise<PuzzleBoard | null> => {
-  console.log("in api random");
-
   if (!(await publicPuzzlesExist(userId))) {
     console.log("no publics exist");
     return null;
   }
-  console.log("Still in random");
+
   const getHigherRandomPuzzleQuery: Query<DocumentData, DocumentData> = query(
     puzzlesCollection,
     where("randomId", ">=", Math.floor(Math.random() * 10000)),
@@ -242,9 +241,11 @@ export const getApiRandomPublicPuzzle = async (
   );
 
   let randomPuzzle: PuzzleBoard | null = null;
+  let i = 0;
 
-  while (!randomPuzzle) {
-    console.log("looping");
+  while (!randomPuzzle && i < 5) {
+    i += 1;
+    console.log(i);
     try {
       const puzzleBoard = await fetchPublicPuzzleFromQuery(
         getHigherRandomPuzzleQuery,
@@ -264,7 +265,6 @@ export const getApiRandomPublicPuzzle = async (
       };
     }
   }
-  console.log("random puzzle in api", randomPuzzle);
   return randomPuzzle;
 };
 
@@ -316,4 +316,42 @@ export const deleteApiPuzzle = async (puzzleId: string) => {
       console.log("error deleting puzzle", e.message);
     };
   }
+};
+
+export const getApiPuzzleByPuzzleId = async (
+  puzzleId: string
+): Promise<PuzzleBoard | null> => {
+  try {
+    const docRef = doc(puzzlesCollection, puzzleId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const {
+        label,
+        username,
+        categories,
+        tiles1,
+        tiles2,
+        tiles3,
+        tiles4,
+        permission,
+      } = docSnap.data();
+      const puzzleBoard = collectionFormatToPuzzleBoard(docSnap.id, {
+        label,
+        username,
+        categories,
+        tiles1,
+        tiles2,
+        tiles3,
+        tiles4,
+        permission,
+      });
+      return puzzleBoard;
+    }
+    return null;
+  } catch {
+    (e: Error) => {
+      console.log("error fetching puzzle", e.message);
+    };
+  }
+  return null;
 };

@@ -86,7 +86,7 @@ const AddFriendScreen = (props: {
           <Text style={{ color: COLOR_THREE, fontFamily: "code" }}>Search</Text>
         </TouchableOpacity>
       </View>
-      <View>
+      <View style={{ width: "100%" }}>
         {users.length > 0 ? (
           users.map((user: User, index) => {
             return (

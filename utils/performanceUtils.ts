@@ -24,22 +24,29 @@ export const createPerformanceReport = (user: User): PerformanceReport => {
     nonLevelsSolved: user.performanceMetrics.nonLevelsSolved,
     totalPuzzlesSeen: totalSeen,
     totalPuzzlesSolved: totalSolved,
-    totalWinRate: totalSeen > 0 ? totalSolved / totalSeen : 0,
+    totalWinRate:
+      Math.round((totalSeen > 0 ? totalSolved / totalSeen : 0) * 100) / 100,
     levelWinRate:
-      user.performanceMetrics.levelsSeen > 0
-        ? user.performanceMetrics.levelsSolved /
-          user.performanceMetrics.levelsSeen
-        : 0,
+      Math.round(
+        (user.performanceMetrics.levelsSeen > 0
+          ? user.performanceMetrics.levelsSolved /
+            user.performanceMetrics.levelsSeen
+          : 0) * 100
+      ) / 100,
     nonLevelWinRate:
-      user.performanceMetrics.nonLevelsSeen > 0
-        ? user.performanceMetrics.nonLevelsSolved /
-          user.performanceMetrics.nonLevelsSeen
-        : 0,
+      Math.round(
+        (user.performanceMetrics.nonLevelsSeen > 0
+          ? user.performanceMetrics.nonLevelsSolved /
+            user.performanceMetrics.nonLevelsSeen
+          : 0) * 100
+      ) / 100,
     totalAvgMistakes:
-      totalSeen > 0
-        ? user.puzzlesSeen.reduce((acc, curr) => {
-            return acc + curr.mistakesMade;
-          }, 0) / totalSeen
-        : 0,
+      Math.round(
+        (totalSeen > 0
+          ? user.puzzlesSeen.reduce((acc, curr) => {
+              return acc + curr.mistakesMade;
+            }, 0) / totalSeen
+          : 0) * 100
+      ) / 100,
   };
 };

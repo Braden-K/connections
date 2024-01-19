@@ -13,7 +13,7 @@ export const friendsScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    margin: 14,
+    margin: 10,
     backgroundColor: COLOR_ONE,
   },
   buttonView: {
@@ -55,12 +55,12 @@ export const addFriendScreenStyles = StyleSheet.create({
     height: 40,
     marginBottom: 5,
     borderColor: COLOR_TWO,
-    borderWidth: 3,
+    borderWidth: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingLeft: 10,
-    paddingRight: 10,
+    paddingRight: 90,
     borderRadius: 10,
   },
   userListingText: {

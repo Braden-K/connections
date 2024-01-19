@@ -1,4 +1,10 @@
-import { Text, SafeAreaView, View, FlatList } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { myPuzzlesScreenStyles } from "../styles/createTabStyles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
@@ -13,7 +19,8 @@ import { getApiUserById } from "../firestoreApi/users";
 import { getApiPuzzlesByUserId } from "../firestoreApi/puzzles";
 import LoadingSpinner from "../components/LoadingSpinner";
 import VerticalPuzzleScroll from "../components/VerticalPuzzleScroll";
-import { COLOR_THREE } from "../styles/constants";
+import { COLOR_THREE, COLOR_TWO } from "../styles/constants";
+import Icon from "react-native-vector-icons/AntDesign";
 
 const FriendsPuzzlesScreen = (props: {
   navigation: NativeStackNavigationProp<
@@ -64,12 +71,17 @@ const FriendsPuzzlesScreen = (props: {
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
-              margin: 10,
+              margin: 5,
+              alignItems: "center",
             }}
           >
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+              <Icon name="arrowleft" size={30} color={COLOR_TWO} />
+            </TouchableOpacity>
             <Text style={playHomeScreenStyles.titleText}>
               {friendUsername}'s Puzzles
             </Text>
+            <View style={{ width: 30 }} />
           </View>
           <View style={{ flex: 1, marginTop: 20, alignItems: "center" }}>
             {friendPuzzles.length === 0 ? (

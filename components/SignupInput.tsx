@@ -17,7 +17,7 @@ const SignupInput = (props: {
   const onPressSignup = async () => {
     const signupSuccess = await postApiSignUpUser(email, password, username);
     if (signupSuccess === 1) {
-      props.navigation.navigate("Login");
+      props.navigation.replace("Login");
     } else if (signupSuccess === 0) {
       alert("Authenication service error");
     } else if (signupSuccess === 2) {

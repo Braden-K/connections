@@ -13,18 +13,37 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { PlayStackParamList } from "../types/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import ArchivedPuzzleListing from "../components/ArchivedPuzzleListing";
+import { getApiPuzzleByPuzzleId } from "../firestoreApi/puzzles";
+import { useState } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ArchiveScreen = (props: {
   navigation: NativeStackNavigationProp<PlayStackParamList, "Archive">;
 }) => {
   const user = useSelector((state: RootState) => state.user.user);
   const levels = useSelector((state: RootState) => state.puzzle.levels);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const archiveListingData = user.puzzlesSeen.filter((puzzle) => {
+  const puzzleStats = user.puzzlesSeen.filter((puzzle) => {
     return !levels.reduce((acc, level) => {
       return acc || level.puzzleId === puzzle.puzzleId;
     }, false);
   });
+
+  const onPuzzlePress = async (puzzleId: string) => {
+    setIsLoading(true);
+    const puzzle = await getApiPuzzleByPuzzleId(puzzleId);
+    if (puzzle) {
+      setIsLoading(false);
+      props.navigation.navigate("PlayPuzzle", {
+        puzzle: puzzle,
+      });
+    } else {
+      setIsLoading(false);
+      alert("Error loading puzzle from archive");
+    }
+  };
 
   return (
     <SafeAreaView style={archiveScreenStyles.container}>
@@ -51,12 +70,23 @@ const ArchiveScreen = (props: {
         </Text>
         <View style={{ width: 30 }} />
       </View>
-      <ScrollView
-        style={{
-          width: "100%",
-          marginTop: 10,
-        }}
-      ></ScrollView>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <View style={{ marginTop: 10, alignItems: "center", width: "100%" }}>
+          <ScrollView style={{ width: "100%" }}>
+            {puzzleStats.map((stats, index) => {
+              return (
+                <ArchivedPuzzleListing
+                  key={index}
+                  stats={stats}
+                  onPress={() => onPuzzlePress(stats.puzzleId)}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+      )}
     </SafeAreaView>
   );
 };

@@ -59,10 +59,12 @@ const PlayPuzzleScreen = (props: {
       setCorrectModalVisible(true);
 
       const logCompletionData = async () => {
+        console.log(":about to log");
         await putApiUserPuzzleAttemptById(
           user.id,
           puzzle.puzzleId,
-          puzzle.username,
+          puzzle.label,
+          puzzle.username ? puzzle.username : "",
           numMistakes < 4,
           numMistakes,
           levels.includes(puzzle)
@@ -164,17 +166,30 @@ const PlayPuzzleScreen = (props: {
           <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <Icon name="arrowleft" size={30} color={COLOR_TWO} />
           </TouchableOpacity>
-          <Text style={{ ...playHomeScreenStyles.titleText, marginLeft: 5 }}>
+          <Text
+            style={{
+              ...playHomeScreenStyles.titleText,
+              marginLeft: 5,
+              fontSize: 16,
+            }}
+          >
             {puzzle.label}
           </Text>
         </View>
-        <PillButton
-          text={generateXs(numMistakes)}
-          color={COLOR_TWO}
-          width={150}
-          onPress={() => {}}
-          disabled={true}
-        />
+        <View
+          style={{
+            borderColor: COLOR_TWO,
+            borderRadius: 50,
+            borderWidth: 2,
+            width: 100,
+            padding: 10,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: COLOR_TWO, fontSize: 16, fontFamily: "code" }}>
+            {generateXs(numMistakes)}
+          </Text>
+        </View>
       </View>
       <View style={{ marginTop: 10, marginBottom: 10, width: "100%" }}>
         <PuzzleBoardView

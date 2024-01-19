@@ -300,6 +300,7 @@ export const deleteApiUserFriendRequest = async (
 export const putApiUserPuzzleAttemptById = async (
   userId: string,
   puzzleId: string,
+  label: string,
   createdBy: string,
   solved: boolean,
   mistakesMade: number,
@@ -310,9 +311,11 @@ export const putApiUserPuzzleAttemptById = async (
     const userDocSnap = await getDoc(userDocRef);
     const userDocData = userDocSnap.data();
     if (userDocSnap.exists() && userDocData) {
+      console.log("bout to update dat shittt");
       await updateDoc(userDocRef, {
         puzzlesSeen: arrayUnion({
           puzzleId: puzzleId,
+          label: label,
           createdBy: createdBy,
           solved: solved,
           attemptedOn: Date.now(),

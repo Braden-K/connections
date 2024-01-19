@@ -31,6 +31,7 @@ import {
 } from "../styles/constants";
 import VerticalPuzzleScroll from "../components/VerticalPuzzleScroll";
 import Icon from "react-native-vector-icons/AntDesign";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const { width } = Dimensions.get("window");
 
@@ -40,6 +41,7 @@ const PlayScreen = (props: {
   const levels = useSelector((state: RootState) => state.puzzle.levels);
   const user = useSelector((state: RootState) => state.user.user);
   const [showCompleted, setShowCompleted] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const toggleSwitch = () =>
     setShowCompleted((previousState) => !previousState);
@@ -64,11 +66,13 @@ const PlayScreen = (props: {
   };
 
   const onPressPlayRandom = async () => {
-    console.log("In random");
+    setIsLoading(true);
     let random = await getApiRandomPublicPuzzle(user.id);
     if (random) {
+      setIsLoading(false);
       props.navigation.navigate("PlayPuzzle", { puzzle: random });
     } else {
+      setIsLoading(false);
       alert("No public puzzles available");
     }
   };
@@ -97,77 +101,87 @@ const PlayScreen = (props: {
           }}
         />
       </View>
-      <Text style={playHomeScreenStyles.subText}>Public</Text>
-      <TouchableOpacity onPress={onPressPlayRandom}>
-        <View
-          style={{
-            ...puzzleCard.container,
-            width: width - 75,
-            height: 75,
-          }}
-        >
-          <View style={{ alignItems: "center" }}>
-            <Text
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <Text style={playHomeScreenStyles.subText}>Public</Text>
+          <TouchableOpacity onPress={onPressPlayRandom}>
+            <View
               style={{
-                fontFamily: "poppins",
-                color: COLOR_TWO,
-                fontSize: 20,
-                marginBottom: 5,
+                ...puzzleCard.container,
+                width: width - 75,
+                height: 75,
               }}
             >
-              Random public puzzle
-            </Text>
-            <Text>
-              <Icon name="caretright" size={22} color={COLOR_THREE} />
-            </Text>
+              <View style={{ alignItems: "center" }}>
+                <Text
+                  style={{
+                    fontFamily: "poppins",
+                    color: COLOR_TWO,
+                    fontSize: 20,
+                    marginBottom: 5,
+                  }}
+                >
+                  Random public puzzle
+                </Text>
+                <Text>
+                  <Icon name="caretright" size={22} color={COLOR_THREE} />
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+          <Text style={playHomeScreenStyles.subText}>Levels</Text>
+          <View style={playHomeScreenStyles.levelsView}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: COLOR_THREE,
+                  fontFamily: "poppins",
+                  marginRight: 5,
+                }}
+              >
+                new
+              </Text>
+              <Switch
+                trackColor={{ false: TILE_COLOR, true: TILE_COLOR }}
+                thumbColor={COLOR_TWO}
+                onValueChange={toggleSwitch}
+                value={showCompleted}
+              />
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: COLOR_THREE,
+                  fontFamily: "poppins",
+                  marginLeft: 5,
+                }}
+              >
+                seen
+              </Text>
+            </View>
+            {filterLevels(levels).length > 0 ? (
+              <VerticalPuzzleScroll
+                puzzles={filterLevels(levels)}
+                onPress={onPressLevel}
+              />
+            ) : (
+              <Text
+                style={{
+                  color: COLOR_TWO,
+                  fontFamily: "poppins",
+                  marginTop: 50,
+                }}
+              >
+                {!showCompleted
+                  ? "You played all existing levels!"
+                  : "Play a level!"}
+              </Text>
+            )}
           </View>
-        </View>
-      </TouchableOpacity>
-      <Text style={playHomeScreenStyles.subText}>Levels</Text>
-      <View style={playHomeScreenStyles.levelsView}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text
-            style={{
-              fontSize: 12,
-              color: COLOR_THREE,
-              fontFamily: "poppins",
-              marginRight: 5,
-            }}
-          >
-            new
-          </Text>
-          <Switch
-            trackColor={{ false: TILE_COLOR, true: TILE_COLOR }}
-            thumbColor={COLOR_TWO}
-            onValueChange={toggleSwitch}
-            value={showCompleted}
-          />
-          <Text
-            style={{
-              fontSize: 12,
-              color: COLOR_THREE,
-              fontFamily: "poppins",
-              marginLeft: 5,
-            }}
-          >
-            seen
-          </Text>
-        </View>
-        {filterLevels(levels).length > 0 ? (
-          <VerticalPuzzleScroll
-            puzzles={filterLevels(levels)}
-            onPress={onPressLevel}
-          />
-        ) : (
-          <Text
-            style={{ color: COLOR_TWO, fontFamily: "poppins", marginTop: 50 }}
-          >
-            {!showCompleted
-              ? "You played all existing levels!"
-              : "Play a level!"}
-          </Text>
-        )}
-      </View>
+        </>
+      )}
     </SafeAreaView>
   );
 };

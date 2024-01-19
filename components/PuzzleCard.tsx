@@ -25,7 +25,7 @@ const PuzzleCard = (props: {
             style={{
               fontFamily: "code",
               color: COLOR_THREE,
-              fontSize: props.title && props.title.length > 9 ? 14 : 20,
+              fontSize: 12,
             }}
           >
             {props.title}

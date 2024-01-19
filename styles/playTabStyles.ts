@@ -60,7 +60,7 @@ export const playHomeScreenStyles = StyleSheet.create({
     alignItems: "center",
   },
   titleText: {
-    fontSize: 30,
+    fontSize: 25,
     fontFamily: "poppins",
     color: COLOR_TWO,
   },
@@ -157,7 +157,20 @@ export const playModalStyles = StyleSheet.create({
 export const archiveScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     backgroundColor: COLOR_ONE,
+    margin: 10,
+    alignItems: "center",
+  },
+  listing: {
+    width: "100%",
+    borderRadius: 10,
+    borderColor: COLOR_TWO,
+    borderWidth: 1,
+    paddingLeft: 7,
+    paddingRight: 7,
+    padding: 3,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });

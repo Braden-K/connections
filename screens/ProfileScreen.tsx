@@ -23,7 +23,7 @@ const ProfileScreen = (props: {
   const onPressLogout = () => {
     signOut(auth)
       .then(() => {
-        props.navigation.navigate("Welcome");
+        props.navigation.replace("Welcome");
       })
       .catch((error) => {
         alert("Error logging out");
