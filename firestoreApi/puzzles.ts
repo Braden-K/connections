@@ -194,7 +194,10 @@ const fetchPublicPuzzleFromQuery = async (
           tiles4,
           permission,
         } = doc.data();
-        if (doc.data().userId !== userId) {
+        if (
+          doc.data().userId !== userId &&
+          doc.data().permission === "public"
+        ) {
           puzzleBoard = collectionFormatToPuzzleBoard(doc.id, {
             label,
             username,
@@ -222,7 +225,7 @@ export const getApiRandomPublicPuzzle = async (
   userId: string
 ): Promise<PuzzleBoard | null> => {
   if (!(await publicPuzzlesExist(userId))) {
-    console.log("no publics exist");
+    console.log("EHH");
     return null;
   }
 
@@ -245,7 +248,6 @@ export const getApiRandomPublicPuzzle = async (
 
   while (!randomPuzzle && i < 5) {
     i += 1;
-    console.log(i);
     try {
       const puzzleBoard = await fetchPublicPuzzleFromQuery(
         getHigherRandomPuzzleQuery,
