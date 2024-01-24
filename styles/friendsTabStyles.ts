@@ -60,7 +60,7 @@ export const addFriendScreenStyles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingLeft: 10,
-    paddingRight: 90,
+    paddingRight: 10,
     borderRadius: 10,
   },
   userListingText: {

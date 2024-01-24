@@ -13,6 +13,8 @@ import {
 import { width } from "../styles/friendsTabStyles";
 import PillButton from "./PillButton";
 import { COLOR_THREE, COLOR_TWO } from "../styles/constants";
+import { useState } from "react";
+import LoadingSpinner from "./LoadingSpinner";
 
 const RequestModal = (props: {
   visible: boolean;
@@ -22,8 +24,10 @@ const RequestModal = (props: {
 }) => {
   const currentUser = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleAddBack = async (friendId: string) => {
+    setIsLoading(true);
     await deleteApiUserFriendRequest(friendId, currentUser.id);
     await putApiUserFriendById(currentUser.id, friendId);
     props.setRequestingUsers(
@@ -34,6 +38,7 @@ const RequestModal = (props: {
     if (refreshedUser) {
       dispatch(loadUser({ user: refreshedUser }));
     }
+    setIsLoading(false);
   };
 
   return (
@@ -44,63 +49,73 @@ const RequestModal = (props: {
     >
       <View style={requestModalStyles.modalContainer}>
         <View style={requestModalStyles.modalContent}>
-          <View style={requestModalStyles.modalHeader}>
-            {props.requestingUsers.length >= 1 && (
-              <TouchableOpacity onPress={props.close}>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <View style={requestModalStyles.modalHeader}>
+                {props.requestingUsers.length >= 1 && (
+                  <TouchableOpacity onPress={props.close}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: "bold",
+                        color: COLOR_THREE,
+                      }}
+                    >
+                      X
+                    </Text>
+                  </TouchableOpacity>
+                )}
                 <Text
                   style={{
-                    fontSize: 15,
-                    fontWeight: "bold",
+                    fontFamily: "code",
+                    fontSize: 20,
                     color: COLOR_THREE,
                   }}
                 >
-                  X
+                  {props.requestingUsers.length >= 1 ? "Requests" : ""}
                 </Text>
-              </TouchableOpacity>
-            )}
-            <Text
-              style={{ fontFamily: "code", fontSize: 20, color: COLOR_THREE }}
-            >
-              {props.requestingUsers.length >= 1 ? "Requests" : ""}
-            </Text>
-            <Text></Text>
-          </View>
-          <View style={{ alignItems: "center", margin: 10, padding: 10 }}>
-            {props.requestingUsers.length >= 1 ? (
-              props.requestingUsers.map((user, index) => {
-                return (
-                  <UserListing
-                    key={index}
-                    isSearch={false}
-                    username={user.username}
-                    requested={false}
-                    added={false}
-                    onPress={() => handleAddBack(user.id)}
-                  />
-                );
-              })
-            ) : (
-              <View style={{ alignItems: "center" }}>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontFamily: "code",
-                    marginTop: 80,
-                    marginBottom: 40,
-                    color: COLOR_TWO,
-                  }}
-                >
-                  No Pending Requests!
-                </Text>
-                <PillButton
-                  text={"close"}
-                  color={COLOR_THREE}
-                  width={100}
-                  onPress={props.close}
-                />
+                <Text></Text>
               </View>
-            )}
-          </View>
+              <View style={{ alignItems: "center", margin: 10, padding: 10 }}>
+                {props.requestingUsers.length >= 1 ? (
+                  props.requestingUsers.map((user, index) => {
+                    return (
+                      <UserListing
+                        key={index}
+                        isSearch={false}
+                        username={user.username}
+                        requested={false}
+                        added={false}
+                        onPress={() => handleAddBack(user.id)}
+                      />
+                    );
+                  })
+                ) : (
+                  <View style={{ alignItems: "center" }}>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontFamily: "code",
+                        marginTop: 80,
+                        marginBottom: 40,
+                        color: COLOR_TWO,
+                      }}
+                    >
+                      No Pending Requests!
+                    </Text>
+                    <PillButton
+                      text={"close"}
+                      color={COLOR_THREE}
+                      width={100}
+                      onPress={props.close}
+                    />
+                  </View>
+                )}
+              </View>
+            </>
+          )}
         </View>
       </View>
     </Modal>
