@@ -49,14 +49,17 @@ const PlayScreen = (props: {
   const filterLevels = (levels: PuzzleBoard[]) => {
     if (showCompleted) {
       return levels.filter((level) =>
-        user.puzzlesSeen.reduce(
-          (acc, puzzle) => acc || puzzle.puzzleId === level.puzzleId,
-          false
-        )
+        user.puzzlesSeen
+          ? user.puzzlesSeen.reduce(
+              (acc, puzzle) => acc || puzzle.puzzleId === level.puzzleId,
+              false
+            )
+          : false
       );
     } else {
       return levels.filter(
         (level) =>
+          !user.puzzlesSeen ||
           !user.puzzlesSeen.reduce(
             (acc, puzzle) => acc || puzzle.puzzleId === level.puzzleId,
             false

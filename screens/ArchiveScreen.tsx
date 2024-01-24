@@ -77,11 +77,13 @@ const ArchiveScreen = (props: {
           <ScrollView style={{ width: "100%" }}>
             {puzzleStats.map((stats, index) => {
               return (
-                <ArchivedPuzzleListing
-                  key={index}
-                  stats={stats}
-                  onPress={() => onPuzzlePress(stats.puzzleId)}
-                />
+                <View style={{ marginBottom: 5 }}>
+                  <ArchivedPuzzleListing
+                    key={index}
+                    stats={stats}
+                    onPress={() => onPuzzlePress(stats.puzzleId)}
+                  />
+                </View>
               );
             })}
           </ScrollView>

@@ -13,7 +13,6 @@ import {
 } from "../types/navigation";
 import { Permission, PuzzleBoard } from "../types/PuzzleBoard";
 import { playHomeScreenStyles } from "../styles/playTabStyles";
-import RectangularButton from "../components/RectangularButton";
 import { useEffect, useState } from "react";
 import { getApiUserById } from "../firestoreApi/users";
 import { getApiPuzzlesByUserId } from "../firestoreApi/puzzles";
@@ -39,8 +38,6 @@ const FriendsPuzzlesScreen = (props: {
       console.log(friendId);
       const friend = await getApiUserById(friendId);
       let friendPuzzles = await getApiPuzzlesByUserId(friendId);
-      console.log(friend);
-      console.log(friendPuzzles);
 
       friendPuzzles = friendPuzzles.filter(
         (puzzle) => puzzle.permission !== Permission.PRIVATE
